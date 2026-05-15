@@ -6900,8 +6900,30 @@ return getUserMenuBg(user);
 function ColorPickerSection({ user, profiles, updateData }) {
 const [tab, setTab] = useState("card");
 const [savedMsg, setSavedMsg] = useState(false);
+const [uploadingBg, setUploadingBg] = useState(false);
 
-const [cardCustom, setCardCustom] = useState({ c1: user.cardColor?.c1 || "#0f172a", c2: user.cardColor?.c2 || "#1e3a8a" });
+// Bejelentkező háttér state
+const initLoginBg = user.loginBg || { c1:"#58d8ff", o1:55, s1:18, pos1:"top left", c2:"#ad52ff", o2:55, s2:18, pos2:"top right", bg1:"#020817", bg2:"#01040d" };
+const [lbg, setLbg] = useState(initLoginBg);
+
+const safeColor = (v, fallback) => (typeof v === "string" && v.startsWith("#") && v.length >= 4 && v.length <= 9) ? v : fallback;
+const initC1 = safeColor(user.cardColor?.c1, "#0f172a");
+const initC2 = safeColor(user.cardColor?.c2, "#1e3a8a");
+const [cardCustom, setCardCustom] = useState({ c1: initC1, c2: initC2 });
+
+// Ha sérült adat volt (pl. data:image/png beragadt), azonnal javítjuk a Supabase-ben is
+useEffect(() => {
+const c = user.cardColor;
+if(!c) return;
+const isCorrupt = (v) => typeof v === "string" && (v.startsWith("data:") || v.startsWith("http") || v.length > 20);
+if(isCorrupt(c.c1) || isCorrupt(c.c2)) {
+const fixed = { c1: "#0f172a", c2: "#1e3a8a" };
+setCardCustom(fixed);
+try { localStorage.setItem(`cardColor_${user.id}`, JSON.stringify(fixed)); } catch(e) {}
+updateData(profiles.map(p => p.id === user.id ? { ...p, cardColor: fixed } : p));
+console.log("[FIX] Sérült cardColor adat javítva:", c);
+}
+}, []);
 
 const ALL_ADMIN_CARDS = [
 { id:"jelentes",    emoji:"📊", label:"Napi Jelentés",   defaultC1:"#1e1b4b", defaultC2:"#312e81", permKey:"jelentes" },
@@ -6945,10 +6967,53 @@ setMenuCustom({ c1: saved?.c1 || def.defaultC1, c2: saved?.c2 || def.defaultC2 }
 
 const showSaved = () => { setSavedMsg(true); setTimeout(()=>setSavedMsg(false), 2200); };
 
+const saveLbg = (next) => {
+setLbg(next);
+updateData(profiles.map(p => p.id === user.id ? { ...p, loginBg: next } : p));
+showSaved();
+};
+
 const saveCard = (type, colors) => {
 try { localStorage.setItem(`cardColor_${user.id}`, JSON.stringify(colors)); } catch(e) {}
 updateData(profiles.map(p => p.id === user.id ? { ...p, [type]: colors } : p));
 showSaved();
+};
+
+const saveCardImage = async (file) => {
+if(!file) return;
+setUploadingBg(true);
+try {
+const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+const fileName = `cardbg_${user.id}_${Date.now()}_${Math.floor(Math.random()*9999)}.${ext}`;
+const { error } = await _supabase.storage.from("avatars").upload(fileName, file, { contentType: file.type, upsert: false });
+if(error) { console.error("Háttérkép feltöltés hiba:", error); alert("Feltöltés sikertelen: " + error.message); return; }
+const { data: urlData } = _supabase.storage.from("avatars").getPublicUrl(fileName);
+const url = urlData.publicUrl;
+updateData(profiles.map(p => p.id === user.id ? { ...p, cardImage: url } : p));
+showSaved();
+} catch(e) {
+console.error("Háttérkép hiba:", e);
+alert("Hiba történt: " + e.message);
+} finally {
+setUploadingBg(false);
+}
+};
+
+const removeCardImage = async () => {
+const oldUrl = user.cardImage;
+updateData(profiles.map(p => p.id === user.id ? { ...p, cardImage: null } : p));
+showSaved();
+if(oldUrl && typeof oldUrl === "string" && oldUrl.includes("/avatars/")) {
+try {
+const parts = oldUrl.split("/avatars/");
+if(parts.length >= 2) {
+const fileName = parts[1].split("?")[0];
+if(fileName.startsWith("cardbg_")) {
+await _supabase.storage.from("avatars").remove([fileName]);
+}
+}
+} catch(e) { console.warn("Háttérkép törlési hiba:", e); }
+}
 };
 
 const saveMenuCardColor = (colors) => {
@@ -6964,7 +7029,9 @@ updateData(profiles.map(p => p.id === user.id ? { ...p, menuCardColors: {} } : p
 showSaved();
 };
 
-const cardBg = `linear-gradient(135deg,${cardCustom.c1},${cardCustom.c2})`;
+const cardBg = user.cardImage
+? `linear-gradient(160deg, rgba(0,0,0,0.45), rgba(0,0,0,0.25)), url("${user.cardImage}") center/cover no-repeat`
+: `linear-gradient(135deg,${cardCustom.c1},${cardCustom.c2})`;
 const menuBg = `linear-gradient(135deg,${menuCustom.c1},${menuCustom.c2})`;
 
 const PRESET_COLORS_EXTENDED = [
@@ -6991,7 +7058,7 @@ return (
 
 {/* Tab váltó */}
 <div style={{ display:"flex", background:"rgba(0,0,0,0.25)", padding:5, borderRadius:12, marginBottom:20, gap:4 }}>
-{[["card","🪪 Belépőkártya"],["menu","📋 Főmenü kártyák"]].map(([key,label])=>(
+{[["card","🪪 Belépőkártya"],["menu","📋 Főmenü kártyák"],["loginbg","🌌 Háttér"]].map(([key,label])=>(
 <button key={key} onClick={()=>setTab(key)}
 style={{ flex:1, padding:"9px 6px", border:"none", borderRadius:8, fontWeight:700, fontSize:"0.62rem", cursor:"pointer",
 background: tab===key ? "#f59e0b" : "transparent",
@@ -7009,6 +7076,39 @@ transition:"all 0.25s" }}>
 Belépőkártya háttérszíne (ki vagy? képernyő)
 </div>
 
+{/* Háttérkép feltöltés / törlés */}
+<div style={{ display:"flex", gap:8, marginBottom:12, flexWrap:"wrap" }}>
+<label style={{
+flex:1, minWidth:160,
+display:"flex", alignItems:"center", justifyContent:"center", gap:6,
+padding:"10px 12px",
+background: uploadingBg ? "rgba(99,102,241,0.25)" : "rgba(99,102,241,0.15)",
+border:"2px dashed #6366F1", borderRadius:10,
+cursor: uploadingBg ? "default" : "pointer",
+fontWeight:800, fontSize:"0.68rem", color:"#A5B4FC"
+}}>
+{uploadingBg ? "⏳ Feltöltés..." : (user.cardImage ? "🖼️ Másik kép" : "🖼️ Háttérkép feltöltése")}
+<input type="file" accept="image/*" style={{ display:"none" }} disabled={uploadingBg}
+onChange={e => {
+const f = e.target.files?.[0];
+if(f) saveCardImage(f);
+e.target.value = "";
+}} />
+</label>
+{user.cardImage && (
+<button onClick={removeCardImage}
+style={{
+padding:"10px 14px",
+background:"rgba(239,68,68,0.15)",
+border:"1.5px solid #EF4444", borderRadius:10,
+color:"#FCA5A5", fontWeight:800, fontSize:"0.68rem",
+cursor:"pointer", flexShrink:0
+}}>
+🗑️ Kép törlése
+</button>
+)}
+</div>
+
 {/* Előnézet kártya */}
 <div style={{
 background: cardBg,
@@ -7019,8 +7119,10 @@ marginBottom:14,
 boxShadow:"0 0 25px rgba(59,130,246,0.3), inset 0 0 15px rgba(59,130,246,0.15)",
 transition:"background 0.3s"
 }}>
-<div style={{ fontSize:"2.8rem", filter:"drop-shadow(0 4px 8px rgba(0,0,0,0.4))", lineHeight:1 }}><AvatarImg avatar={user.avatar} size={48} /></div>
-<div style={{ color:"white", fontWeight:900, fontSize:"1.1rem", textTransform:"uppercase", letterSpacing:2 }}>{user.name}</div>
+<div style={{ filter:"drop-shadow(0 4px 8px rgba(0,0,0,0.4))", lineHeight:1, flexShrink:0 }}>
+<AvatarImg avatar={user.avatar} size={48} />
+</div>
+<div style={{ color:"white", fontWeight:900, fontSize:"1.1rem", textTransform:"uppercase", letterSpacing:2, wordBreak:"break-word" }}>{user.name || "?"}</div>
 </div>
 
 {/* Preset színkörök */}
@@ -7030,7 +7132,7 @@ const isActive = user.cardColor?.c1===p.c1;
 return (
 <button key={i} onClick={()=>{ setCardCustom({c1:p.c1,c2:p.c2}); saveCard("cardColor",{c1:p.c1,c2:p.c2}); }}
 style={{
-width:36, height:36, borderRadius:"50%", cursor:"pointer", flexShrink:0, position:"relative",
+width:36, height:36, minWidth:36, minHeight:36, borderRadius:"50%", cursor:"pointer", flexShrink:0, position:"relative", aspectRatio:"1",
 background:`linear-gradient(135deg,${p.c1},${p.c2})`,
 border: isActive ? "3px solid white" : "2px solid rgba(255,255,255,0.1)",
 transform: isActive ? "scale(1.15)" : "scale(1)",
@@ -7047,15 +7149,15 @@ transition:"all 0.2s"
 <div style={{ display:"flex", gap:10, alignItems:"flex-end" }}>
 <div style={{ flex:1 }}>
 <div style={{ fontSize:"0.55rem", color:"#64748b", marginBottom:4, fontWeight:700 }}>Szín 1</div>
-<input type="text" value={cardCustom.c1}
+<input type="text" value={cardCustom.c1} maxLength={9}
 onChange={e=>setCardCustom(p=>({...p,c1:e.target.value}))}
-style={{ width:"100%", background:"rgba(0,0,0,0.3)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"9px 10px", color:"white", fontWeight:700, fontSize:"0.7rem" }} />
+style={{ width:"100%", background:"rgba(0,0,0,0.3)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"9px 10px", color:"white", fontWeight:700, fontSize:"0.7rem", minWidth:0, overflow:"hidden", textOverflow:"ellipsis" }} />
 </div>
 <div style={{ flex:1 }}>
 <div style={{ fontSize:"0.55rem", color:"#64748b", marginBottom:4, fontWeight:700 }}>Szín 2</div>
-<input type="text" value={cardCustom.c2}
+<input type="text" value={cardCustom.c2} maxLength={9}
 onChange={e=>setCardCustom(p=>({...p,c2:e.target.value}))}
-style={{ width:"100%", background:"rgba(0,0,0,0.3)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"9px 10px", color:"white", fontWeight:700, fontSize:"0.7rem" }} />
+style={{ width:"100%", background:"rgba(0,0,0,0.3)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"9px 10px", color:"white", fontWeight:700, fontSize:"0.7rem", minWidth:0, overflow:"hidden", textOverflow:"ellipsis" }} />
 </div>
 <button onClick={()=>saveCard("cardColor", cardCustom)}
 style={{ background:"#f59e0b", border:"none", padding:"10px 16px", borderRadius:10, color:"white", fontWeight:800, fontSize:"0.68rem", cursor:"pointer", boxShadow:"0 4px 15px rgba(245,158,11,0.4)", flexShrink:0 }}>
@@ -7119,7 +7221,7 @@ const isActive = currentC1===p.c1;
 return (
 <button key={i} onClick={()=>{ const nc={c1:p.c1,c2:p.c2}; setMenuCustom(nc); saveMenuCardColor(nc); }}
 style={{
-width:36, height:36, borderRadius:"50%", cursor:"pointer", flexShrink:0, position:"relative",
+width:36, height:36, minWidth:36, minHeight:36, borderRadius:"50%", cursor:"pointer", flexShrink:0, position:"relative", aspectRatio:"1",
 background:`linear-gradient(135deg,${p.c1},${p.c2})`,
 border: isActive ? "3px solid white" : "2px solid rgba(255,255,255,0.1)",
 transform: isActive ? "scale(1.15)" : "scale(1)",
@@ -7159,6 +7261,95 @@ style={{ width:"100%", padding:"6px", border:"1px dashed rgba(255,255,255,0.15)"
 </button>
 </div>
 )}
+
+{/* ── BEJELENTKEZŐ HÁTTÉR TAB ── */}
+{tab === "loginbg" && (
+<div>
+
+{/* Előnézet */}
+<div style={{
+  width:"100%", height:110, borderRadius:16, marginBottom:16,
+  background:(()=>{
+    const cm={"top left":"0% 0%","top right":"100% 0%","bottom left":"0% 100%","bottom right":"100% 100%"};
+    const rgba=(h,a)=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return `rgba(${r},${g},${b},${(a/100).toFixed(2)})`;};
+    return `radial-gradient(circle at ${cm[lbg.pos1]},${rgba(lbg.c1,lbg.o1)},transparent ${lbg.s1}%),radial-gradient(circle at ${cm[lbg.pos2]},${rgba(lbg.c2,lbg.o2)},transparent ${lbg.s2}%),linear-gradient(180deg,${lbg.bg1} 0%,${lbg.bg2} 100%)`;
+  })(),
+  display:"flex", alignItems:"center", justifyContent:"center",
+  border:"1px solid rgba(0,191,255,0.3)",
+  boxShadow:"0 0 18px rgba(0,191,255,0.2)"
+}}>
+  <span style={{ fontSize:"0.65rem", color:"rgba(255,255,255,0.5)", fontWeight:700, letterSpacing:2 }}>ELŐNÉZET</span>
+</div>
+
+{/* 2 oszlopos grid */}
+<div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:14 }}>
+{[1,2].map(n => {
+const cKey=`c${n}`,oKey=`o${n}`,sKey=`s${n}`,pKey=`pos${n}`;
+const corners=[["top left","↖"],["top right","↗"],["bottom left","↙"],["bottom right","↘"]];
+return (
+<div key={n} style={{ background:"rgba(3,14,33,0.92)", border:"1px solid #00bfff", borderRadius:14, padding:12, boxShadow:"0 0 10px rgba(0,191,255,0.35),inset 0 0 16px rgba(0,191,255,0.05)" }}>
+  <div style={{ color:"#2cc7ff", fontWeight:800, fontSize:"0.72rem", marginBottom:10, textShadow:"0 0 8px rgba(44,199,255,0.8)" }}>{n}. fény</div>
+  <div style={{ fontSize:"0.58rem", color:"#bfefff", marginBottom:4 }}>Szín</div>
+  <div style={{ height:38, borderRadius:10, border:"1.5px solid #00bfff", padding:4, marginBottom:10, cursor:"pointer", boxShadow:"0 0 10px rgba(0,191,255,0.2)" }}
+    onClick={()=>{ const inp=document.createElement("input"); inp.type="color"; inp.value=lbg[cKey]; inp.addEventListener("input",(e)=>{ const nv={...lbg,[cKey]:e.target.value}; setLbg(nv); }); inp.addEventListener("change",(e)=>saveLbg({...lbg,[cKey]:e.target.value})); inp.click(); }}>
+    <div style={{ height:"100%", borderRadius:7, background:lbg[cKey] }} />
+  </div>
+  <div style={{ fontSize:"0.58rem", color:"#bfefff", marginBottom:3 }}>Erősség <span style={{ color:"#dff8ff" }}>{lbg[oKey]}%</span></div>
+  <input type="range" min="10" max="80" step="1" value={lbg[oKey]}
+    onChange={e=>setLbg(p=>({...p,[oKey]:parseInt(e.target.value)}))}
+    onMouseUp={e=>saveLbg({...lbg,[oKey]:parseInt(e.target.value)})}
+    onTouchEnd={e=>saveLbg({...lbg,[oKey]:lbg[oKey]})}
+    style={{ width:"100%", marginBottom:8, accentColor:"#00bfff" }} />
+  <div style={{ fontSize:"0.58rem", color:"#bfefff", marginBottom:3 }}>Méret <span style={{ color:"#dff8ff" }}>{lbg[sKey]}%</span></div>
+  <input type="range" min="5" max="60" step="1" value={lbg[sKey]}
+    onChange={e=>setLbg(p=>({...p,[sKey]:parseInt(e.target.value)}))}
+    onMouseUp={e=>saveLbg({...lbg,[sKey]:parseInt(e.target.value)})}
+    onTouchEnd={e=>saveLbg({...lbg,[sKey]:lbg[sKey]})}
+    style={{ width:"100%", marginBottom:10, accentColor:"#00bfff" }} />
+  <div style={{ fontSize:"0.58rem", color:"#bfefff", marginBottom:6 }}>Sarok</div>
+  <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:5 }}>
+    {corners.map(([val,arrow])=>(
+      <button key={val} onClick={()=>saveLbg({...lbg,[pKey]:val})}
+        style={{ height:30, borderRadius:8, border:`1.5px solid ${lbg[pKey]===val?"#00bfff":"rgba(0,191,255,0.2)"}`, background:lbg[pKey]===val?"rgba(0,191,255,0.18)":"rgba(0,191,255,0.03)", color:"#2cc7ff", fontSize:"0.9rem", cursor:"pointer", boxShadow:lbg[pKey]===val?"0 0 10px rgba(0,191,255,0.5)":"none", transition:"all 0.15s" }}>
+        {arrow}
+      </button>
+    ))}
+  </div>
+</div>
+);
+})}
+</div>
+
+{/* Háttér alap szín */}
+<div style={{ background:"rgba(3,14,33,0.92)", border:"1px solid #00bfff", borderRadius:14, padding:12, marginBottom:10, boxShadow:"0 0 10px rgba(0,191,255,0.35),inset 0 0 16px rgba(0,191,255,0.05)" }}>
+  <div style={{ color:"#2cc7ff", fontWeight:800, fontSize:"0.72rem", marginBottom:10, textShadow:"0 0 8px rgba(44,199,255,0.8)" }}>Háttér alap szín</div>
+  <div style={{ display:"grid", gridTemplateColumns:"1fr auto 1fr", alignItems:"center", gap:8, marginBottom:12 }}>
+    <div style={{ height:44, borderRadius:10, border:"1.5px solid #00bfff", padding:5, cursor:"pointer", boxShadow:"0 0 10px rgba(0,191,255,0.2)" }}
+      onClick={()=>{ const inp=document.createElement("input"); inp.type="color"; inp.value=lbg.bg1; inp.addEventListener("input",(e)=>setLbg(p=>({...p,bg1:e.target.value}))); inp.addEventListener("change",(e)=>saveLbg({...lbg,bg1:e.target.value})); inp.click(); }}>
+      <div style={{ height:"100%", borderRadius:7, background:lbg.bg1 }} />
+    </div>
+    <span style={{ color:"#2cc7ff", fontSize:"1.2rem", textShadow:"0 0 8px rgba(44,199,255,0.8)" }}>→</span>
+    <div style={{ height:44, borderRadius:10, border:"1.5px solid #00bfff", padding:5, cursor:"pointer", boxShadow:"0 0 10px rgba(0,191,255,0.2)" }}
+      onClick={()=>{ const inp=document.createElement("input"); inp.type="color"; inp.value=lbg.bg2; inp.addEventListener("input",(e)=>setLbg(p=>({...p,bg2:e.target.value}))); inp.addEventListener("change",(e)=>saveLbg({...lbg,bg2:e.target.value})); inp.click(); }}>
+      <div style={{ height:"100%", borderRadius:7, background:lbg.bg2 }} />
+    </div>
+  </div>
+  <div style={{ fontSize:"0.58rem", color:"#bfefff", marginBottom:8 }}>Gyors sablonok</div>
+  <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+    {[{bg1:"#020817",bg2:"#01040d"},{bg1:"#0d0221",bg2:"#050010"},{bg1:"#021207",bg2:"#010a04"},{bg1:"#0a0a0a",bg2:"#000000"},{bg1:"#1a0010",bg2:"#0a0008"},{bg1:"#001a1a",bg2:"#000d0d"},{bg1:"#0f0a00",bg2:"#050300"},{bg1:"#12001a",bg2:"#08000d"}].map((s,i)=>(
+      <div key={i} onClick={()=>saveLbg({...lbg,bg1:s.bg1,bg2:s.bg2})}
+        style={{ width:32, height:32, borderRadius:"50%", background:`linear-gradient(135deg,${s.bg1},${s.bg2})`, border:lbg.bg1===s.bg1?"3px solid #00bfff":"2px solid rgba(255,255,255,0.15)", cursor:"pointer", boxShadow:"0 0 8px rgba(0,191,255,0.15)", transition:"all 0.15s" }} />
+    ))}
+  </div>
+</div>
+
+<button onClick={()=>saveLbg({ c1:"#58d8ff", o1:55, s1:18, pos1:"top left", c2:"#ad52ff", o2:55, s2:18, pos2:"top right", bg1:"#020817", bg2:"#01040d" })}
+style={{ width:"100%", padding:"6px", border:"1px dashed rgba(0,191,255,0.25)", borderRadius:8, background:"none", color:"#475569", fontWeight:900, fontSize:"0.58rem", textTransform:"uppercase", cursor:"pointer" }}>
+↺ Alapértelmezett visszaállítása
+</button>
+</div>
+)}
+
 </div>
 );
 }
@@ -7240,6 +7431,9 @@ const STEP = CARD_W + GAP;
 const CONTAINER_W = VISIBLE * STEP;
 const CARD_H = Math.floor(CARD_W * 1.27);
 
+const activeProfile = available[activeIdx] || null;
+const lbData = activeProfile?.loginBg || null;
+
 const getActiveAlarms = (p) => {
 const nowDate = new Date().toISOString().slice(0,10);
 return (events||[]).filter(ev => !ev.alarmFired && ev.eventDate >= nowDate);
@@ -7248,7 +7442,13 @@ const getFiredAlarms = (p) => (events||[]).filter(ev => ev.alarmFired && (ev.ass
 
 return (
 <div className="pane" style={{
-  background: "radial-gradient(circle at top left,rgba(88,216,255,0.55),transparent 18%), radial-gradient(circle at top right,rgba(173,82,255,0.55),transparent 18%), linear-gradient(180deg,#020817 0%,#01040d 100%)",
+  background:(()=>{
+    const lb = lbData;
+    if(!lb) return "linear-gradient(180deg,#020817 0%,#01040d 100%)";
+    const cm={"top left":"0% 0%","top right":"100% 0%","bottom left":"0% 100%","bottom right":"100% 100%"};
+    const rgba=(h,a)=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return `rgba(${r},${g},${b},${(a/100).toFixed(2)})`;};
+    return `radial-gradient(circle at ${cm[lb.pos1]||"0% 0%"},${rgba(lb.c1||"#58d8ff",lb.o1||55)},transparent ${lb.s1||18}%),radial-gradient(circle at ${cm[lb.pos2]||"100% 0%"},${rgba(lb.c2||"#ad52ff",lb.o2||55)},transparent ${lb.s2||18}%),linear-gradient(180deg,${lb.bg1||"#020817"} 0%,${lb.bg2||"#01040d"} 100%)`;
+  })(),
   alignItems:"center", justifyContent:"flex-start", display:"flex", flexDirection:"column",
   position:"relative", overflowY:"auto", overflowX:"hidden"
 }}>
