@@ -1,0 +1,36 @@
+{
+  "name": "Családi Feladatkezelő",
+  "short_name": "Családi",
+  "description": "Családi feladatok kezelése",
+  "start_url": "/csaladi/",
+  "scope": "/csaladi/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "lang": "hu",
+  "icons": [
+    {
+      "src": "/csaladi/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/csaladi/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/csaladi/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/csaladi/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
