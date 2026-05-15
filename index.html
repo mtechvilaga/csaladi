@@ -663,7 +663,7 @@ if(!avatar) return <span style={{ fontSize: size*0.7+"px" }}>👤</span>;
 if(avatar.startsWith("data:") || avatar.startsWith("http")) {
 return <img src={avatar} alt="avatar" style={{ width:size, height:size, borderRadius:"50%", objectFit:"cover", flexShrink:0, ...style }} />;
 }
-return <span style={{ fontSize: size*0.7+"px", lineHeight:1, ...style }}>{avatar}</span>;
+return <span style={{ fontSize: size*0.7+"px", lineHeight:1, flexShrink:0, ...style }}>{avatar}</span>;
 }
 const PANEL_COLORS = [
 {bg:"linear-gradient(160deg,#1e1b4b,#312e81)",accent:"#7C3AED",dark:"#4C1D95"},
@@ -7356,305 +7356,237 @@ style={{ width:"100%", padding:"6px", border:"1px dashed rgba(0,191,255,0.25)", 
 
 function PickerPane({ slotIdx, profiles, usedIds, onSelect, events, pinFlow, setPinFlow, pinInput, setPinInput, setSlots }) {
 const available = profiles.filter(p => !usedIds.includes(p.id));
-const adminIdx = available.findIndex(p => p.isAdmin);
-const [activeIdx, setActiveIdx] = useState(adminIdx >= 0 ? adminIdx : 0);
-const [dragging, setDragging] = useState(false);
-const startX = useRef(null);
-const containerRef = useRef(null);
+const [loginName, setLoginName] = useState("");
+const [loginPin, setLoginPin] = useState("");
+const [loginError, setLoginError] = useState("");
 
-const VISIBLE = 5;
-
-const half = Math.floor(VISIBLE / 2);
-
-
-useEffect(() => {
-if(available.length > 0 && activeIdx >= available.length) setActiveIdx(available.length - 1);
-}, [available.length]);
-
-const getOffset = (idx) => {
-let diff = idx - activeIdx;
-if(diff > available.length / 2) diff -= available.length;
-if(diff < -available.length / 2) diff += available.length;
-return diff;
+const handleLogin = () => {
+  const found = available.find(p => p.name.toLowerCase() === loginName.trim().toLowerCase());
+  if(!found) { setLoginError("Ismeretlen felhasználónév!"); return; }
+  if(found.pin && loginPin !== found.pin) { setLoginError("Hibás PIN kód!"); return; }
+  setLoginError("");
+  onSelect(found, slotIdx);
 };
 
-const go = (dir) => {
-setActiveIdx(i => (i + dir + available.length) % available.length);
-if(navigator.vibrate) navigator.vibrate(18);
-};
-
-
-useEffect(() => {
-const el = containerRef.current;
-if(!el) return;
-const handleWheel = (e) => { e.preventDefault(); go(e.deltaX > 0 || e.deltaY > 0 ? 1 : -1); };
-const handleTouchMove = (e) => {
-if(startX.current === null) return;
-const dx = (e.touches ? e.touches[0].clientX : e.clientX) - startX.current;
-if(Math.abs(dx) > 8) e.preventDefault();
-};
-el.addEventListener("wheel", handleWheel, { passive: false });
-el.addEventListener("touchmove", handleTouchMove, { passive: false });
-return () => { el.removeEventListener("wheel", handleWheel); el.removeEventListener("touchmove", handleTouchMove); };
-}, [activeIdx, available.length]);
-
-
-const availableLenRef = useRef(available.length);
-useEffect(() => { availableLenRef.current = available.length; }, [available.length]);
-useEffect(() => {
-const handleKey = (e) => {
-const len = availableLenRef.current;
-if(len <= 1) return;
-if(e.key === "ArrowLeft")  { e.preventDefault(); setActiveIdx(i => (i - 1 + len) % len); if(navigator.vibrate) navigator.vibrate(18); }
-if(e.key === "ArrowRight") { e.preventDefault(); setActiveIdx(i => (i + 1) % len); if(navigator.vibrate) navigator.vibrate(18); }
-if(e.key === "Enter")      { e.preventDefault(); setActiveIdx(i => { onSelect(available[i], slotIdx); return i; }); }
-};
-window.addEventListener("keydown", handleKey);
-return () => window.removeEventListener("keydown", handleKey);
-}, []);
-
-const onTouchStart = (e) => {
-startX.current = e.touches ? e.touches[0].clientX : e.clientX;
-setDragging(true);
-};
-const onTouchEnd = (e) => {
-if(startX.current === null) { setDragging(false); return; }
-const dx = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX) - startX.current;
-if(Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
-startX.current = null;
-setDragging(false);
-};
-
-const CARD_W = Math.min(220, Math.floor(window.innerWidth * 0.55));
-const GAP = 14;
-const STEP = CARD_W + GAP;
-const CONTAINER_W = VISIBLE * STEP;
-const CARD_H = Math.floor(CARD_W * 1.27);
-
-const activeProfile = available[activeIdx] || null;
-const lbData = activeProfile?.loginBg || null;
-
-const getActiveAlarms = (p) => {
-const nowDate = new Date().toISOString().slice(0,10);
-return (events||[]).filter(ev => !ev.alarmFired && ev.eventDate >= nowDate);
-};
-const getFiredAlarms = (p) => (events||[]).filter(ev => ev.alarmFired && (ev.assignedTo === p.id || ev.createdBy === p.id || !ev.assignedTo));
+const hasPinUser = available.find(p => p.name.toLowerCase() === loginName.trim().toLowerCase() && p.pin);
 
 return (
 <div className="pane" style={{
-  background:(()=>{
-    const lb = lbData;
-    if(!lb) return "linear-gradient(180deg,#020817 0%,#01040d 100%)";
-    const cm={"top left":"0% 0%","top right":"100% 0%","bottom left":"0% 100%","bottom right":"100% 100%"};
-    const rgba=(h,a)=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return `rgba(${r},${g},${b},${(a/100).toFixed(2)})`;};
-    return `radial-gradient(circle at ${cm[lb.pos1]||"0% 0%"},${rgba(lb.c1||"#58d8ff",lb.o1||55)},transparent ${lb.s1||18}%),radial-gradient(circle at ${cm[lb.pos2]||"100% 0%"},${rgba(lb.c2||"#ad52ff",lb.o2||55)},transparent ${lb.s2||18}%),linear-gradient(180deg,${lb.bg1||"#020817"} 0%,${lb.bg2||"#01040d"} 100%)`;
-  })(),
-  alignItems:"center", justifyContent:"flex-start", display:"flex", flexDirection:"column",
-  position:"relative", overflowY:"auto", overflowX:"hidden"
+  backgroundImage:"url('https://uxwigmwdihbcfhyeywpu.supabase.co/storage/v1/object/public/backgrounds/backgroundsmobil.png')",
+  backgroundSize:"cover",
+  backgroundPosition:"center",
+  backgroundRepeat:"no-repeat",
+  display:"flex", flexDirection:"column",
+  alignItems:"center", justifyContent:"center",
+  position:"relative", overflowY:"auto"
 }}>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
 <style>{`
-@keyframes picker-login-pulse { 0%,100%{box-shadow:0 0 25px rgba(166,78,255,0.7),0 0 55px rgba(166,78,255,0.28)} 50%{box-shadow:0 0 35px rgba(166,78,255,0.9),0 0 80px rgba(166,78,255,0.45)} }
-.picker-login-btn { animation: picker-login-pulse 2s ease-in-out infinite; }
-.picker-login-btn:active { transform: scale(0.97) !important; }
-@media (pointer: coarse), (max-width: 768px) {
-  .picker-login-btn { display: none !important; }
-  .picker-wheel-card { justify-content: center !important; align-items: center !important; }
+@media (min-width: 768px) {
+  .pane {
+    background-image: url('https://uxwigmwdihbcfhyeywpu.supabase.co/storage/v1/object/public/backgrounds/backgroundspc.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+  }
 }
-.picker-wheel-card { transition: transform 0.45s cubic-bezier(.25,0,.25,1), opacity 0.45s ease, box-shadow 0.45s ease; will-change: transform; }
-.picker-question { font-size: clamp(1.8rem,5vw,3.2rem); }
-.picker-title { font-size: clamp(0.75rem, 3.5vw, 0.9rem) !important; text-align: center !important; width: 100%; display: block; }
-@media (max-width: 700px) {
-  .picker-question { font-size: 2rem !important; margin-top:16px !important; margin-bottom:12px !important; }
-  .picker-title { font-size: clamp(0.75rem, 3.5vw, 0.9rem) !important; text-align: center !important; width: 100%; display: block; }
+.glass-login-card {
+  width: min(540px, 93vw);
+  padding: clamp(12px,3vw,24px) clamp(20px,5vw,42px) clamp(24px,5vw,44px);
+  border-radius: 35px;
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: inset 0 2px 15px rgba(255,255,255,0.04), 0 10px 40px rgba(255,255,255,0.02);
+  position: relative;
+  z-index: 2;
 }
+.glass-login-card::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:35px;
+  box-shadow: inset 0 0 25px rgba(255,255,255,0.18), 0 0 20px rgba(255,255,255,0.06);
+  pointer-events:none;
+}
+.glass-app-title {
+  text-align:center;
+  color:#fff;
+  font-size: clamp(18px,4.5vw,28px);
+  font-weight:900;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  margin-top:-4px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.4), 0 0 20px rgba(255,180,50,0.5);
+}
+.glass-title {
+  text-align:center;
+  color:#f8e7d5;
+  font-size: clamp(26px,5.5vw,48px);
+  font-weight:700;
+  margin-bottom: clamp(16px,3vw,28px);
+  text-shadow: 0 2px 10px rgba(255,255,255,0.25), 0 2px 5px rgba(0,0,0,0.2);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.glass-input-box {
+  position:relative;
+  margin-bottom:16px;
+}
+.glass-input-box input {
+  width:100%;
+  height: clamp(50px,8vw,66px);
+  border:none;
+  outline:none;
+  border-radius:18px;
+  padding-left: clamp(48px,8vw,68px);
+  font-size: clamp(15px,3.5vw,22px);
+  color:#f7e5d5;
+  background:rgba(255,255,255,0.12);
+  border:2px solid rgba(255,255,255,0.35);
+  box-shadow: inset 0 0 12px rgba(255,255,255,0.18), 0 0 10px rgba(255,255,255,0.05);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.glass-input-box input::placeholder { color:#f3dfca; }
+.glass-input-box i {
+  position:absolute;
+  left: clamp(14px,3vw,22px);
+  top:50%;
+  transform:translateY(-50%);
+  font-size: clamp(18px,4vw,26px);
+  color:#f3dfca;
+}
+.glass-btn {
+  width:100%;
+  height: clamp(40px,6vw,52px);
+  border:none;
+  cursor:pointer;
+  border-radius:50px;
+  font-size: clamp(14px,3vw,20px);
+  font-weight:800;
+  color:#74431d;
+  background: linear-gradient(to bottom, #fffdf9, #f5e3ca);
+  box-shadow: inset 0 3px 8px rgba(255,255,255,0.9), 0 10px 20px rgba(0,0,0,0.15);
+  transition:0.25s;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing:1px;
+  margin-top:4px;
+  opacity:0.9;
+}
+.glass-btn:hover { transform:translateY(-2px); }
+.glass-btn:active { transform:scale(0.98); }
+.glass-register {
+  text-align:center;
+  margin-top:14px;
+  color:#f6e7d7;
+  font-size: clamp(8px,1.5vw,11px);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height:1.6;
+}
+.glass-register-by {
+  display:block;
+  text-align:center;
+  margin-top:4px;
+  color:rgba(255,255,255,0.7);
+  font-size: clamp(7px,1.2vw,10px);
+  font-family: Arial, Helvetica, sans-serif;
+  font-style:italic;
+}
+.glass-register strong { color:#ffffff; font-weight:700; }
+.glass-error {
+  text-align:center;
+  color:#fca5a5;
+  font-size: clamp(12px,2.5vw,15px);
+  font-weight:700;
+  margin-bottom:10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.glass-profiles {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:16px;
+}
+.glass-profile-btn {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:10px 8px;
+  border-radius:14px;
+  border:2px solid rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.12);
+  cursor:pointer;
+  transition:0.2s;
+  font-family: Arial, Helvetica, sans-serif;
+  width:82px;
+  height:108px;
+  text-align:center;
+  flex-shrink:0;
+}
+.glass-profile-btn:hover { background:rgba(255,255,255,0.22); transform:translateY(-2px); }
+.glass-profile-btn span { color:#f8e7d5; font-size:clamp(10px,2vw,12px); font-weight:700; text-align:center; width:100%; display:block; word-break:break-word; line-height:1.3; padding-top:2px; overflow:visible; }
 `}</style>
 
-{/* GRID HÁTTÉR */}
-<div style={{ position:"fixed", pointerEvents:"none", zIndex:0, width:360, height:220, left:-20, bottom:-20,
-  backgroundImage:"linear-gradient(rgba(60,90,170,0.12) 1px,transparent 1px),linear-gradient(90deg,rgba(60,90,170,0.12) 1px,transparent 1px)",
-  backgroundSize:"42px 42px", opacity:0.7
-}} />
+<div className="glass-login-card">
+  <div className="glass-app-title">🏠 Családi Feladatkezelő</div>
 
-{/* FEJLÉC */}
-<div style={{ position:"relative", zIndex:2, width:"100%", textAlign:"center", paddingTop:"max(8px,env(safe-area-inset-top))", paddingBottom:2 }}>
-  <div className="picker-title" style={{ fontWeight:800, letterSpacing:1, color:"white" }}>CSALÁDI FELADATKEZELŐ</div>
-</div>
-
-{/* KI VAGY MA? – eltávolítva */}
-
-{available.length === 0 ? (
-  <div style={{ color:"rgba(255,255,255,.4)", fontSize:"1rem", fontWeight:700, textAlign:"center", zIndex:2, position:"relative", flex:1, display:"flex", alignItems:"center", justifyContent:"center" }}>Minden profil már aktív</div>
-) : (
-<div style={{ position:"relative", zIndex:2, width:"100%", flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}
-  ref={containerRef}
-  onTouchStart={onTouchStart}
-  onTouchEnd={onTouchEnd}
-  onMouseDown={onTouchStart}
-  onMouseMove={e=>{ if(dragging && startX.current !== null) { const dx = e.clientX - startX.current; if(Math.abs(dx) > 8) e.preventDefault(); } }}
-  onMouseUp={onTouchEnd}
-  onMouseLeave={onTouchEnd}
->
-  {/* GLOW KÖRÖK */}
-  <div style={{ position:"absolute", pointerEvents:"none", zIndex:0,
-    width:"min(520px,90vw)", height:"min(520px,90vw)", borderRadius:"50%",
-    left:"50%", top:"50%", transform:"translate(-50%,-50%)",
-    background:"radial-gradient(circle,rgba(0,140,255,0) 0%,rgba(0,140,255,0) 49%,rgba(0,140,255,0.03) 56%,rgba(0,140,255,0.12) 61%,rgba(0,140,255,0.16) 64%,rgba(0,140,255,0.08) 67%,rgba(0,140,255,0.025) 72%,transparent 78%)",
-    filter:"blur(2px)"
-  }} />
-  <div style={{ position:"absolute", pointerEvents:"none", zIndex:0,
-    width:"min(400px,70vw)", height:"min(400px,70vw)", borderRadius:"50%",
-    left:"50%", top:"50%", transform:"translate(-50%,-50%)",
-    border:"1px solid rgba(0,162,255,0.06)",
-    boxShadow:"0 0 80px rgba(0,162,255,0.07),inset 0 0 60px rgba(0,162,255,0.03)"
-  }} />
-
-  {/* 3D WHEEL */}
-  {(() => {
-    const n = available.length;
-    // Hány kártyát látunk egyszerre (max 5, de legalább n)
-    const CARD_W = Math.min(280, Math.floor(window.innerWidth * 0.38));
-    const CARD_H = Math.floor(CARD_W * 1.52);
-    const RADIUS = Math.max(CARD_W * 1.1, n <= 3 ? CARD_W * 1.2 : CARD_W * 1.5);
-    const angleStep = 360 / n;
-
-    return (
-    <div style={{ position:"relative", width:"100%", height: CARD_H + 60, display:"flex", justifyContent:"center", alignItems:"center" }}>
-      <div style={{ position:"relative", width:CARD_W, height:CARD_H, transformStyle:"preserve-3d", perspective:1200 }}>
-        {available.map((profile, idx) => {
-          const offset = getOffset(idx);
-          const angleDeg = offset * angleStep;
-          const angleRad = angleDeg * Math.PI / 180;
-          const tx = Math.sin(angleRad) * RADIUS;
-          const tz = Math.cos(angleRad) * RADIUS - RADIUS;
-          const isActive = offset === 0;
-          const absOff = Math.abs(offset);
-          // csak -2..+2 offset-eket jelenítünk meg
-          if(absOff > 2 && n > 5) return null;
-          const opacity = isActive ? 1 : absOff === 1 ? 0.65 : 0.35;
-          const scale = isActive ? 1 : absOff === 1 ? 0.82 : 0.65;
-          const rotY = -angleDeg;
-          const zIdx = 10 - absOff;
-          const firedAlarms = getFiredAlarms(profile);
-          const hasFired = firedAlarms.length > 0;
-
-          // kártya szín/border
-          let border, boxShadow;
-          if(isActive)         { border="2px solid #53b8ff"; boxShadow="0 0 24px rgba(83,184,255,0.9),0 0 90px rgba(83,184,255,0.28)"; }
-          else if(offset===-1) { border="2px solid #d98cff"; boxShadow="0 0 18px rgba(217,140,255,0.6),0 0 45px rgba(217,140,255,0.22)"; }
-          else if(offset===1)  { border="2px solid #ffcc74"; boxShadow="0 0 18px rgba(255,204,116,0.5),0 0 45px rgba(255,204,116,0.16)"; }
-          else                 { border="1px solid rgba(255,255,255,.15)"; boxShadow="none"; }
-
-          return (
-          <div key={profile.id}
-            className="picker-wheel-card"
-            onClick={() => { if(isActive) onSelect(profile, slotIdx); else setActiveIdx(idx); }}
-            style={{
-              position:"absolute", top:0, left:0,
-              width:CARD_W, height:CARD_H,
-              borderRadius:30,
-              background:"linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0.05))",
-              backdropFilter:"blur(18px)", WebkitBackdropFilter:"blur(18px)",
-              border, boxShadow,
-              display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",
-              cursor: isActive ? "pointer" : "pointer",
-              opacity,
-              transform:`translateX(${tx}px) translateZ(${tz}px) rotateY(${rotY}deg) scale(${scale})`,
-              transformOrigin:"center center",
-              zIndex: zIdx,
-              overflow:"hidden",
-            }}>
-
-            {/* felső fény nem aktív kártyákon */}
-            {!isActive && <div style={{ position:"absolute", inset:0, background:"linear-gradient(180deg,rgba(255,255,255,0.07),transparent 45%)", pointerEvents:"none" }} />}
-
-            {/* piros badge */}
-            {isActive && hasFired && (
-              <div style={{ position:"absolute", top:12, right:12, background:"#EF4444", color:"white", borderRadius:"50%", width:28, height:28, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"0.9rem", fontWeight:900, zIndex:10 }}>!</div>
-            )}
-
-            {/* AVATAR */}
-            <div style={{ lineHeight:1, marginTop: isActive ? 10 : 0, marginBottom: isActive ? 14 : 0, position:"relative", zIndex:2, filter: isActive ? "drop-shadow(0 6px 22px rgba(0,0,0,.55))" : "none", display:"flex", justifyContent:"center" }}>
-              <AvatarImg avatar={profile.avatar} size={isActive ? 90 : 62} />
-            </div>
-
-            {/* NÉV */}
-            <div style={{ marginTop: isActive ? 12 : 16, fontSize: isActive ? "1.15rem" : "0.82rem", fontWeight:900, color:"white", position:"relative", zIndex:2, textAlign:"center", letterSpacing:"0.04em", textTransform:"uppercase" }}>
-              {profile.name}
-            </div>
-
-            {/* ARANY – csak gyereknél */}
-            {isActive && !profile.isAdmin && !profile.isCoAdmin && (
-              <div style={{ marginTop:10, background:"rgba(255,255,255,.15)", borderRadius:20, padding:"4px 16px", zIndex:2, position:"relative" }}>
-                <span style={{ color:"#FCD34D", fontSize:"1rem", fontWeight:900 }}>🪙 {profile.gold}</span>
-              </div>
-            )}
-
-            {/* PIN BEVITEL VAGY BELÉPÉS GOMB */}
-            {isActive && pinFlow && pinFlow.profile.id === profile.id ? (
-              <>
-                <div style={{ color:"rgba(255,255,255,.55)", fontSize:"0.55rem", marginTop:14, marginBottom:6, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em", position:"relative", zIndex:2, textAlign:"center" }}>
-                  Add meg a 4 jegyű PIN kódot
-                </div>
-                <input type="password" inputMode="numeric" pattern="[0-9]*" autoFocus maxLength="4" autoComplete="off"
-                  onClick={e=>e.stopPropagation()}
-                  style={{ fontSize:"1.8rem", textAlign:"center", border:"none", borderBottom:"2px solid white", background:"transparent", color:"white", width:100, outline:"none", letterSpacing:"0.3em", marginBottom:10, position:"relative", zIndex:2 }}
-                  value={pinInput}
-                  onChange={e=>{
-                    const v=e.target.value.replace(/\D/g,"");
-                    setPinInput(v);
-                    if(v===pinFlow.profile.pin){
-                      setSlots(prev=>{ const n=[...prev]; n[pinFlow.slot]=pinFlow.profile.id; return n; });
-                      setPinFlow(null); setPinInput("");
-                    }
-                  }} />
-                <button onClick={e=>{ e.stopPropagation(); setPinFlow(null); setPinInput(""); }}
-                  style={{ color:"rgba(255,255,255,.5)", background:"none", border:"none", fontWeight:900, fontSize:"0.6rem", cursor:"pointer", textTransform:"uppercase", letterSpacing:"0.08em", position:"relative", zIndex:2 }}>
-                  ↩ Vissza
-                </button>
-              </>
-            ) : (
-              <>
-
-                {/* LEJÁRT ALARM */}
-                {isActive && hasFired && (
-                  <div style={{ marginTop:8, background:"rgba(239,68,68,.25)", borderRadius:10, padding:"5px 14px", fontSize:"0.72rem", color:"#FCA5A5", fontWeight:900, zIndex:2, position:"relative" }}>
-                    🔔 {firedAlarms.length} lejárt emlékeztető
-                  </div>
-                )}
-
-                {/* BELÉPÉS GOMB */}
-                {isActive && (
-                  <button className="picker-login-btn" onClick={e=>{ e.stopPropagation(); onSelect(profile, slotIdx); }}
-                    style={{ marginTop:18, border:"none", padding:"6px 16px", borderRadius:999, background:"linear-gradient(90deg,#b84eff 0%,#7a4dff 100%)", color:"white", fontSize:"0.7rem", fontWeight:800, cursor:"pointer", position:"relative", zIndex:2 }}>
-                    Belépés →
-                  </button>
-                )}
-              </>
-            )}
-
-            {/* NYÍL nem aktív – eltávolítva */}
-          </div>
-          );
-        })}
-      </div>
+  {/* Gyors profil választó */}
+  {available.length > 0 && (
+    <div className="glass-profiles">
+      {available.map(p => {
+        const cleanName = p.name.replace(/[\u{1F300}-\u{1FFFF}]/gu, "").replace(/[\u2600-\u27FF]/g,"").trim();
+        return (
+        <button key={p.id} className="glass-profile-btn"
+          onClick={() => { setLoginName(p.name); setLoginError(""); }}>
+          <AvatarImg avatar={p.avatar} size={54} />
+          <span>{cleanName}</span>
+        </button>
+        );
+      })}
     </div>
-    );
-  })()}
+  )}
 
-  {/* NAVIGÁCIÓS NYILAK + PONTSOR – eltávolítva */}
+  <div className="glass-input-box">
+    <i className="fa-solid fa-user"></i>
+    <input type="text" placeholder="Felhasználónév"
+      value={loginName}
+      onChange={e=>{ setLoginName(e.target.value); setLoginError(""); }}
+      onKeyDown={e=>{ if(e.key==="Enter") handleLogin(); }} />
+  </div>
 
-</div>
-)}
+  {hasPinUser && (
+    <div className="glass-input-box">
+      <i className="fa-solid fa-lock"></i>
+      <input type="password" inputMode="numeric" placeholder="PIN kód" maxLength="4"
+        value={loginPin}
+        onChange={e=>{ setLoginPin(e.target.value.replace(/\D/g,"")); setLoginError(""); }}
+        onKeyDown={e=>{ if(e.key==="Enter") handleLogin(); }} />
+    </div>
+  )}
 
-{/* ALSÓ SZÖVEG */}
-<div style={{ position:"relative", zIndex:2, textAlign:"center", marginTop:"auto", marginBottom:24, fontSize:"clamp(0.5rem,1vw,0.75rem)", color:"rgba(255,255,255,0.55)", fontWeight:500, paddingBottom:"max(24px,env(safe-area-inset-bottom))" }}>
-  © 2026 Péter Mihály. All rights reserved. | Designed and Developed by Péter Mihály
+  {loginError && <div className="glass-error">⚠️ {loginError}</div>}
+
+  <button className="glass-btn" onClick={handleLogin}>
+    BEJELENTKEZÉS
+  </button>
+
+  <div className="glass-register">
+    © 2026 Péter Mihály. All rights reserved.
+    <span className="glass-register-by">Designed and Developed by Péter Mihály</span>
+  </div>
 </div>
 
 </div>
 );
 }
+
 
 
 function App() {
