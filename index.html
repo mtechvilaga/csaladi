@@ -1011,7 +1011,6 @@ boxShadow: tab===id?"0 0 14px rgba(34,197,94,0.3)":"none", backdropFilter:"blur(
 return (
 <div style={{ maxWidth:580, margin:"0 auto", width:"100%", paddingBottom:12 }}>
 
-{}
 <div style={{ background:"linear-gradient(135deg,#064e3b,#065f46)", borderRadius:24, padding:"22px 22px 18px", marginBottom:14, boxShadow:"0 0 24px rgba(34,197,94,0.22)", border:"1.5px solid #22c55e" }}>
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
@@ -1027,7 +1026,6 @@ return (
 </div>
 </div>
 
-{}
 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10, marginBottom:14 }}>
 {[
 { label:"Bevétel", value:osszbevetel, color:"#22c55e", emoji:"📈" },
@@ -1042,7 +1040,6 @@ return (
 ))}
 </div>
 
-{}
 <div style={{ display:"flex", flexDirection:"column", gap:5, marginBottom:12 }}>
 <div style={{ display:"flex", gap:5 }}>
 {tabBtn("attekintes","Áttekintés","📊")}
@@ -1057,10 +1054,8 @@ return (
 </div>
 </div>
 
-{}
 {tab === "attekintes" && (
 <div>
-{}
 <div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"20px 22px", marginBottom:12, border:"1px solid rgba(255,255,255,.1)" }}>
 <h2 style={{ margin:"0 0 14px 0", fontSize:15, color:"white", fontWeight:900 }}>📊 Kiadások kategóriánként</h2>
 {KATEGORIAK.map(k => {
@@ -1088,7 +1083,6 @@ return (
 {osszkiadas === 0 && <div style={{ color:"rgba(255,255,255,.3)", fontSize:"0.72rem", textAlign:"center", padding:"8px 0" }}>Nincs kiadás ebben a hónapban</div>}
 </div>
 
-{}
 <div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"20px 22px", border:"1px solid rgba(255,255,255,.1)" }}>
 <h2 style={{ margin:"0 0 14px 0", fontSize:15, color:"white", fontWeight:900 }}>🧾 Tételek</h2>
 {monthTetelek.length === 0 && <div style={{ color:"rgba(255,255,255,.3)", fontSize:"0.72rem", textAlign:"center", padding:"8px 0" }}>Nincs rögzített tétel</div>}
@@ -1115,12 +1109,10 @@ style={{ background:"rgba(239,68,68,.15)", border:"none", borderRadius:8, paddin
 </div>
 )}
 
-{}
 {tab === "rogzit" && (
 <div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"22px", border:"1px solid rgba(255,255,255,.1)" }}>
 <h2 style={{ margin:"0 0 18px 0", fontSize:17, display:"flex", alignItems:"center", gap:10, color:"white", fontWeight:900 }}>✏️ Új tétel rögzítése</h2>
 
-{}
 <div style={{ display:"flex", gap:8, marginBottom:12 }}>
 {["kiadás","bevétel"].map(t => (
 <button key={t} onClick={()=>setForm(f=>({...f,tipus:t}))}
@@ -1133,7 +1125,6 @@ outline: form.tipus===t ? `2px solid ${t==="kiadás"?"#EF4444":"#10B981"}` : "no
 ))}
 </div>
 
-{}
 <div style={{ marginBottom:10 }}>
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:4 }}>ÖSSZEG (Ft)</div>
 <input type="number" min="1" placeholder="pl. 5000" value={form.osszeg}
@@ -1141,7 +1132,6 @@ onChange={e=>setForm(f=>({...f,osszeg:e.target.value}))}
 style={inputStyle} />
 </div>
 
-{}
 {form.tipus === "kiadás" && (
 <div style={{ marginBottom:10 }}>
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:6 }}>KATEGÓRIA</div>
@@ -1157,7 +1147,6 @@ background: form.kat===k.id?`${k.color}22`:"rgba(255,255,255,.06)", color:"white
 </div>
 )}
 
-{}
 <div style={{ marginBottom:10 }}>
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:4 }}>LEÍRÁS (opcionális)</div>
 <input type="text" placeholder="pl. Lidl vásárlás" value={form.leiras}
@@ -1165,7 +1154,6 @@ onChange={e=>setForm(f=>({...f,leiras:e.target.value}))}
 style={inputStyle} />
 </div>
 
-{}
 <div style={{ marginBottom:14 }}>
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:4 }}>DÁTUM</div>
 <input type="date" value={form.datum}
@@ -1180,7 +1168,6 @@ style={{ width:"100%", padding:"14px", background:"linear-gradient(90deg,#16A34A
 </div>
 )}
 
-{}
 {tab === "budzset" && (
 <div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"22px", border:"1px solid rgba(255,255,255,.1)" }}>
 <h2 style={{ margin:"0 0 4px 0", fontSize:17, display:"flex", alignItems:"center", gap:10, color:"white", fontWeight:900 }}>🎯 Havi büdzsé – {monthLabel(selectedMonth)}</h2>
@@ -1217,10 +1204,8 @@ style={{ width:"100%", padding:"14px", background:"linear-gradient(90deg,#16A34A
 </div>
 )}
 
-{}
 {tab === "szamlak" && (
 <div>
-{}
 <div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"22px", marginBottom:12, border:"1px solid rgba(255,255,255,.1)" }}>
 <h2 style={{ margin:"0 0 18px 0", fontSize:17, display:"flex", alignItems:"center", gap:10, color:"white", fontWeight:900 }}>📄 Új számla rögzítése</h2>
 <div style={{ marginBottom:12 }}>
@@ -1260,7 +1245,6 @@ background: szamlaForm.ismetlodo?"rgba(59,130,246,.2)":"rgba(255,255,255,.05)", 
 </button>
 </div>
 
-{}
 <div style={{ background:"rgba(59,130,246,.08)", border:"1.5px solid rgba(59,130,246,.22)", borderRadius:18, padding:"16px 18px", marginBottom:14 }}>
 <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
 <span style={{ fontSize:18 }}>📧</span>
@@ -1289,7 +1273,6 @@ style={{ width:"100%", padding:"12px", borderRadius:12, border:"1px solid rgba(2
 <div style={{ color:"rgba(255,255,255,.3)", fontSize:"0.6rem", marginTop:6 }}>💡 Az általad megadott napon és időpontban automatikusan elküldi az emlékeztetőt.</div>
 </div>
 
-{}
 <div style={{ marginBottom:14 }}>
 <div style={{ color:"#64748b", fontSize:"0.65rem", fontWeight:800, marginBottom:6, textTransform:"uppercase" }}>📷 Fotó / Kép (opcionális)</div>
 <label style={{ display:"flex", alignItems:"center", gap:8, padding:"12px 14px", borderRadius:12, border:"1.5px dashed rgba(255,255,255,.2)", background:"rgba(0,0,0,.2)", cursor:"pointer" }}>
@@ -1305,7 +1288,6 @@ style={{ width:"100%", padding:"15px", background:"linear-gradient(90deg,#D97706
 </button>
 </div>
 
-{}
 {["fizetendo","fizetve"].map(statusz => {
 const lista = szamlak.filter(s=>s.statusz===statusz).sort((a,b)=>(a.hatarido||"9999").localeCompare(b.hatarido||"9999"));
 return (
@@ -1347,7 +1329,6 @@ style={{ background:"#065f46", color:"#34d399", border:"1px solid #059669", bord
 : <button onClick={()=>updateSzamla(s.id,{statusz:"fizetendo"})}
 style={{ background:"rgba(255,255,255,.07)", border:"none", borderRadius:8, padding:"7px 10px", color:"#9CA3AF", fontWeight:700, fontSize:"0.72rem", cursor:"pointer" }}>↩</button>
 }
-{}
 {s.ertesitoEmail && s.statusz==="fizetendo" && (() => {
 const st = emailKuldesAllapot[s.id];
 return (
@@ -1372,10 +1353,8 @@ style={{ background:"rgba(239,68,68,.15)", border:"none", borderRadius:8, paddin
 </div>
 )}
 
-{}
 {tab === "merok" && (
 <div>
-{}
 {showMeroForm ? (
 <div style={{ background:"rgba(255,255,255,.05)", borderRadius:14, padding:"16px", marginBottom:10 }}>
 <div style={{ color:"white", fontWeight:900, fontSize:"0.82rem", marginBottom:12 }}>⚡ Új mérőóra</div>
@@ -1439,7 +1418,6 @@ style={{ background:"rgba(239,68,68,.15)", border:"none", borderRadius:8, paddin
 </div>
 {isActive && (
 <div style={{ padding:"0 16px 14px", borderTop:"1px solid rgba(255,255,255,.07)" }}>
-{}
 <div style={{ marginTop:12, marginBottom:10 }}>
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:6 }}>ÚJ ÁLLÁS RÖGZÍTÉSE</div>
 <div style={{ display:"flex", gap:6, marginBottom:6 }}>
@@ -1459,7 +1437,6 @@ style={{ flex:1, padding:"8px 10px", borderRadius:9, border:"1px solid rgba(255,
 style={{ background:"#0891B2", color:"white", border:"none", borderRadius:9, padding:"8px 14px", fontWeight:900, fontSize:"0.78rem", cursor:"pointer" }}>✓</button>
 </div>
 </div>
-{}
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:6 }}>ELŐZŐ ÁLLÁSOK</div>
 {allasok.length===0 && <div style={{ color:"rgba(255,255,255,.25)", fontSize:"0.72rem" }}>Nincs rögzített állás</div>}
 {allasok.map((a,i)=>(
@@ -1483,10 +1460,8 @@ style={{ background:"rgba(239,68,68,.15)", border:"none", borderRadius:7, paddin
 </div>
 )}
 
-{}
 {tab === "jegyzetek" && (
 <div>
-{}
 {showJegyzetForm ? (
 <div style={{ background:"rgba(255,255,255,.05)", borderRadius:14, padding:"16px", marginBottom:10 }}>
 <div style={{ color:"white", fontWeight:900, fontSize:"0.82rem", marginBottom:12 }}>📋 Új okmány / feljegyzés</div>
@@ -1524,7 +1499,6 @@ background: jegyzetForm.fontossag===f.id?`${f.color}22`:"rgba(255,255,255,.06)",
 <textarea rows={4} placeholder="Ide írhatod a kötvényszámot, lejárati dátumot, fontos adatokat..." value={jegyzetForm.tartalom} onChange={e=>setJegyzetForm(f=>({...f,tartalom:e.target.value}))}
 style={{ width:"100%", padding:"10px 12px", borderRadius:10, border:"1px solid rgba(255,255,255,.12)", background:"rgba(0,0,0,.3)", color:"#e2e8f0", fontSize:"0.82rem", fontWeight:700, outline:"none", resize:"vertical", boxSizing:"border-box" }} />
 </div>
-{}
 <div style={{ marginBottom:12 }}>
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:6 }}>📷 FOTÓ / SZKENNELT KÉP (opcionális)</div>
 <label style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 14px", borderRadius:10, border:"1.5px dashed #2d4057", background:"rgba(0,0,0,.3)", cursor:"pointer" }}>
@@ -1550,7 +1524,6 @@ style={{ width:"100%", padding:"12px", background:"linear-gradient(135deg,#7C3AE
 </button>
 )}
 
-{}
 {JEGYZET_KAT.map(kat => {
 const lista = jegyzetek.filter(j=>j.kategoria===kat.id).sort((a,b)=>{
 const fo = {kritikus:0,fontos:1,normal:2};
@@ -1593,13 +1566,11 @@ style={{ background:"rgba(239,68,68,.15)", border:"none", borderRadius:8, paddin
 </div>
 )}
 
-{}
 {tab === "emailbeallit" && (
 <div style={{ background:"rgba(255,255,255,.05)", borderRadius:14, padding:"16px" }}>
 <div style={{ color:"white", fontWeight:900, fontSize:"0.88rem", marginBottom:4 }}>📧 Email értesítési beállítások</div>
 <div style={{ color:"rgba(255,255,255,.4)", fontSize:"0.65rem", marginBottom:16 }}>Állítsd be, miről és hogyan kapj emailt</div>
 
-{}
 <div style={{ marginBottom:16 }}>
 <div style={{ color:"rgba(255,255,255,.6)", fontSize:"0.65rem", fontWeight:700, marginBottom:4 }}>📬 ÉRTESÍTÉSI EMAIL CÍM</div>
 <input type="email" placeholder="pl. nev@gmail.com"
@@ -1609,7 +1580,6 @@ style={{ width:"100%", padding:"10px 12px", borderRadius:10, border:"1px solid r
 <div style={{ color:"rgba(255,255,255,.3)", fontSize:"0.6rem", marginTop:4 }}>Ez az alapértelmezett cím — külön számláknál felülírható</div>
 </div>
 
-{}
 <div style={{ background:"rgba(255,255,255,.04)", borderRadius:12, padding:"12px 14px", marginBottom:14 }}>
 <div style={{ color:"#a78bfa", fontWeight:900, fontSize:"0.72rem", marginBottom:10 }}>📋 Email tartalom beállítások</div>
 {[
@@ -1631,7 +1601,6 @@ borderRadius:"50%", background:"white", transition:"left .2s" }} />
 ))}
 </div>
 
-{}
 <div style={{ background:"rgba(245,158,11,.07)", border:"1.5px solid rgba(245,158,11,.2)", borderRadius:12, padding:"12px 14px", marginBottom:12 }}>
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom: emailBeallitasForm.szamlakKuldes ? 10 : 0 }}>
 <div style={{ color:"#FBBF24", fontWeight:900, fontSize:"0.72rem" }}>🧾 Számlák értesítők</div>
@@ -1663,7 +1632,6 @@ emailBeallitasForm.szamlakGyakoriság==="naponta" ? "📧 Napi összesítő emai
 )}
 </div>
 
-{}
 <div style={{ background:"rgba(8,145,178,.07)", border:"1.5px solid rgba(8,145,178,.2)", borderRadius:12, padding:"12px 14px", marginBottom:12 }}>
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom: emailBeallitasForm.merokKuldes ? 10 : 0 }}>
 <div style={{ color:"#0891B2", fontWeight:900, fontSize:"0.72rem" }}>⚡ Mérőóra értesítők</div>
@@ -1696,7 +1664,6 @@ emailBeallitasForm.merokGyakoriság==="hetente" ? "📧 Heti összesítő minden
 )}
 </div>
 
-{}
 <div style={{ background:"rgba(16,185,129,.07)", border:"1.5px solid rgba(16,185,129,.2)", borderRadius:12, padding:"12px 14px", marginBottom:12 }}>
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom: emailBeallitasForm.tetelek ? 10 : 0 }}>
 <div style={{ color:"#10B981", fontWeight:900, fontSize:"0.72rem" }}>✏️ Kiadás/bevétel tételek emailje</div>
@@ -1723,7 +1690,6 @@ background: emailBeallitasForm.tetelek_Gyak===g.id?"rgba(16,185,129,.2)":"rgba(2
 )}
 </div>
 
-{}
 <div style={{ background:"rgba(124,58,237,.07)", border:"1.5px solid rgba(124,58,237,.2)", borderRadius:12, padding:"12px 14px", marginBottom:16 }}>
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom: emailBeallitasForm.dokumentumok ? 10 : 0 }}>
 <div style={{ color:"#a78bfa", fontWeight:900, fontSize:"0.72rem" }}>📋 Okmányok / dokumentumok emailje</div>
@@ -1755,7 +1721,6 @@ emailBeallitasForm.dokumentumokGyak==="hetente" ? "📧 Heti összesítő az ös
 )}
 </div>
 
-{}
 <div style={{ background:"rgba(255,255,255,.04)", borderRadius:10, padding:"10px 12px", marginBottom:14 }}>
 <div style={{ color:"rgba(255,255,255,.5)", fontSize:"0.65rem", fontWeight:900, marginBottom:6 }}>🔍 ÖSSZEFOGLALÓ – aktív értesítők</div>
 {!emailBeallitasForm.globalEmail && <div style={{ color:"#EF4444", fontSize:"0.65rem", marginBottom:4 }}>⚠️ Nincs megadva email cím!</div>}
@@ -1767,7 +1732,6 @@ emailBeallitasForm.dokumentumokGyak==="hetente" ? "📧 Heti összesítő az ös
 {emailBeallitasForm.tetelesen && <div style={{ color:"rgba(255,255,255,.5)", fontSize:"0.65rem" }}>📑 Tételes kimutatás bekapcsolva</div>}
 </div>
 
-{}
 <button onClick={()=>{
 saveKoltsegData({ ...data, emailBeallitasok: {
 globalEmail: emailBeallitasForm.globalEmail,
@@ -1791,7 +1755,6 @@ style={{ width:"100%", padding:"13px", background: emailBeallitasMentve?"linear-
 </div>
 )}
 
-{}
 {hatarIdoAlert && (hatarIdoAlert.soon.length > 0 || hatarIdoAlert.overdue.length > 0) && (
 <div style={{ position:"fixed", inset:0, background:"rgba(0,5,26,.90)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:9998, padding:20 }}>
 <div style={{ background:"rgba(30,41,59,0.55)", borderRadius:20, maxWidth:380, width:"100%", overflow:"hidden", boxShadow:"0 24px 80px rgba(0,0,0,.6)" }}>
@@ -1837,7 +1800,6 @@ OK, bezárom
 </div>
 )}
 
-{}
 {showDeleteConfirm && (
 <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,.7)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:9999, padding:20 }}>
 <div style={{ background:"rgba(30,41,59,0.55)", borderRadius:16, padding:"24px 20px", maxWidth:320, width:"100%", textAlign:"center" }}>
@@ -2842,7 +2804,6 @@ const myTurn = mode === "online" ? current === mySymbol : true;
 const isOnline = mode === "online";
 return (
 <div style={{ maxWidth:480, margin:"0 auto", width:"100%", display:"flex", flexDirection:"column", gap:12, padding:"8px 0" }}>
-{}
 <div style={{ background:gc("card"), borderRadius:14, padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
 <button onClick={backToMenu} style={{ background:"rgba(255,255,255,.1)", border:"none", borderRadius:8, padding:"6px 12px", color:"white", fontWeight:900, fontSize:"0.72rem", cursor:"pointer" }}>← Menü</button>
 <div style={{ display:"flex", gap:16, alignItems:"center" }}>
@@ -2860,7 +2821,6 @@ return (
 {isOnline && <div style={{ background:"#0e4f6e", borderRadius:8, padding:"6px 10px", color:"#38bdf8", fontWeight:900, fontSize:"0.65rem" }}>🌐 Online</div>}
 </div>
 
-{}
 <div style={{ textAlign:"center", padding:"8px", background:gc("dark"), borderRadius:10 }}>
 {winner === "leave"
 ? <span style={{ color:"#F59E0B", fontWeight:900, fontSize:"0.95rem" }}>🚪 Az ellenfél kilépett!</span>
@@ -2884,7 +2844,6 @@ return (
 }
 </div>
 
-{}
 <div style={{ overflowX:"auto", display:"flex", justifyContent:"center" }}>
 <div style={{ display:"grid", gridTemplateColumns:`repeat(${size}, ${CELL}px)`, gap:3, background:gc("input"), padding:8, borderRadius:12 }}>
 {board.map((row,r)=>row.map((cell,c)=>{
@@ -3566,7 +3525,6 @@ const todayRoutines = routines.filter(r =>
 return (
 <div className="pane" style={{ background:"transparent" }}>
 <div className="pane-header" style={{ background: col.dark, display:"flex", alignItems:"center", justifyContent:"space-between", position:"relative" }}>
-{}
 <div style={{ display:"flex", alignItems:"center", gap:8, position:"relative", minWidth:0 }}>
 <div onClick={() => setEditAvatar(!editAvatar)}
 style={{ cursor:"pointer", background:"rgba(255,255,255,.15)", padding:"5px 8px", borderRadius:"50%", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", minWidth:44, minHeight:44 }}>
@@ -3651,11 +3609,9 @@ style={{ background:"rgba(255,255,255,.15)", border:"none", borderRadius:5, padd
 )}
 </div>
 </div>
-{}
 <div style={{ position:"absolute", left:0, right:0, textAlign:"center", pointerEvents:"none" }}>
 <div className="pane-header-title" style={{ color:"white", fontWeight:900, fontSize:"0.58rem", textTransform:"uppercase", letterSpacing:"0.09em" }}>Családi Feladatkezelő</div>
 </div>
-{}
 <div className="mobile-hide" style={{ display:"flex", alignItems:"center", gap:8 }}>
 <button onClick={()=>{
 if(!document.fullscreenElement) {
@@ -3667,21 +3623,17 @@ document.exitFullscreen && document.exitFullscreen();
 <button onClick={onLogout} style={{ background:"#EF4444", color:"white", border:"none", borderRadius:7, padding:"8px 12px", minHeight:44, fontWeight:900, fontSize:"0.62rem", textTransform:"uppercase", cursor:"pointer", flexShrink:0 }}>KILÉPÉS</button>
 </div>
 </div>
-{}
 <div className="copyright-bar" style={{ background:"rgba(0,0,0,.25)", textAlign:"center", padding:"3px 8px", flexShrink:0 }}>
 <span style={{ color:"rgba(255,255,255,.4)", fontSize:"0.42rem", fontWeight:600 }}>© 2026 Péter Mihály. All rights reserved. | Designed and Developed by Péter Mihály</span>
 </div>
-{}
 {activeCard !== "jatekok" && <div className="mobile-btn-left">
 {!activeCard && <button onClick={(e)=>{ e.stopPropagation(); setNameInput(user.name); setEditingName(true); }} style={{ background:"rgba(255,255,255,.15)", border:"none", borderRadius:10, padding:"10px 14px", color:"white", fontSize:"0.7rem", fontWeight:900, cursor:"pointer", boxShadow:"0 4px 16px rgba(0,0,0,.5)" }}>✏️ NÉV</button>}
 </div>}
-{}
 {activeCard !== "jatekok" && <div className="mobile-btn-right">
 {!activeCard && <button onClick={onLogout} style={{ background:"#EF4444", color:"white", border:"none", borderRadius:10, padding:"10px 16px", fontWeight:900, fontSize:"0.7rem", textTransform:"uppercase", cursor:"pointer", boxShadow:"0 4px 16px rgba(0,0,0,.5)" }}>KILÉPÉS</button>}
 </div>}
 
 <div className="pane-scroll">
-{}
 {!activeCard && (() => {
 const todayDone = (user.completedRoutines||[]).filter(id => id.endsWith(`-${todayStr}`)).length;
 const todayRoutineCount = routines.filter(r => (r.days||[]).includes(todayNum) && (String(r.targetChild)==="ALL"||String(r.targetChild)===String(user.id))).length;
@@ -3725,14 +3677,12 @@ onIdxChange={setWheelIdx}
 );
 })()}
 
-{}
 {activeCard && (
 <button onClick={()=>{ if(activeCard==="jatekok" && activeSubGame) { setActiveSubGame(null); setGameResetKey(k=>k+1); } else { setActiveCard(null); setActiveSubGame(null); setGameResetKey(k=>k+1); } }} style={{ display:"flex", alignItems:"center", gap:6, background:"rgba(255,255,255,.12)", border:"none", borderRadius:10, padding:"8px 14px", minHeight:40, color:"white", fontWeight:900, fontSize:"0.75rem", cursor:"pointer", marginBottom:8 }}>
 ← Vissza
 </button>
 )}
 
-{}
 {activeCard === "rutinok" && <>
 <div className="rutinok-panel" style={{ maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
 
@@ -3887,7 +3837,6 @@ style={{ width:32, height:32, borderRadius:"50%", background:done?"#22C55E":"#EF
 </div>
 </>}
 
-{}
 {activeCard === "feladatok" && <>
 <div className="feladatok-panel" style={{ display:"flex", flexDirection:"column", gap:6, maxWidth:520, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
 {(user.tasks||[]).filter(t => {
@@ -3948,7 +3897,6 @@ onClick={t.done ? undefined : async () => { if(locked2) return; const newProfile
 
 </>}
 
-{}
 {activeCard === "arany" && (
 <div className="arany-panel" style={{ maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
 <div style={{ background:"linear-gradient(135deg,#F59E0B,#EF4444)", borderRadius:"1.5rem", padding:"28px 20px", textAlign:"center", marginBottom:10 }}>
@@ -3960,7 +3908,6 @@ onClick={t.done ? undefined : async () => { if(locked2) return; const newProfile
 </div>
 )}
 
-{}
 {activeCard === "naptar" && (
 <ChildCalendar
 events={events} todayStr={todayStr}
@@ -3969,7 +3916,6 @@ user={user} updateData={updateData}
 />
 )}
 
-{}
 {activeCard === "chat" && (() => {
 const allOthers = profiles.filter(p => p.id !== user.id);
 const dmRoom = chatRoom && chatRoom.startsWith("dm_") ? chatRoom : null;
@@ -3981,7 +3927,6 @@ return (
 <div className="sc" style={{ borderLeft:"5px solid #10B981", overflow:"hidden", display:"flex", flexDirection:"column", minHeight:"40vh", maxWidth:580, margin:"0 auto", width:"100%" }}>
 <div style={{ padding:"12px 16px 8px", fontWeight:900, fontSize:"0.85rem", color:"#34D399" }}>💬 Chat</div>
 
-{}
 <div style={{ display:"flex", gap:6, padding:"0 12px 10px", overflowX:"auto" }}>
 {allOthers.map(p => {
 const room = getDmRoom(user.id, p.id);
@@ -3996,7 +3941,6 @@ style={{ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"cente
 </button>
 );
 })}
-{}
 {(() => {
 const groupRoom = "group_all";
 const isActive = chatRoom === groupRoom;
@@ -4012,7 +3956,6 @@ style={{ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"cente
 })()}
 </div>
 
-{}
 {chatRoom && (()=>{
 if(chatRoom === "group_all") {
 return <div style={{ padding:"0 16px 8px", fontSize:"0.68rem", color:"#FCD34D", fontWeight:700 }}>
@@ -4026,7 +3969,6 @@ return <div style={{ padding:"0 16px 8px", fontSize:"0.68rem", color:"#34D399", 
 </div>;
 })()}
 
-{}
 <div className="chat-messages" style={{ flex:1, overflowY:"auto", padding:"0 12px 8px", maxHeight:"35vh", display:"flex", flexDirection:"column", gap:6, scrollbarWidth:"none", msOverflowStyle:"none" }}>
 {!chatRoom && <div style={{ textAlign:"center", color:"#475569", fontSize:"0.78rem", padding:"30px 0" }}>👆 Válassz egy személyt a csevegéshez</div>}
 {chatRoom && roomMsgs.length === 0 && (
@@ -4062,10 +4004,8 @@ padding:"8px 12px", fontSize:"0.82rem", fontWeight:600, wordBreak:"break-word", 
 <div ref={chatEndRef} />
 </div>
 
-{}
 {chatRoom && (
 <div style={{ padding:"8px 12px max(12px, env(safe-area-inset-bottom))", borderTop:"1px solid #1e2d4f" }}>
-{}
 {chatImagePreview && (
 <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8, background:gc("input"), borderRadius:10, padding:"6px 10px" }}>
 <a href={chatImagePreview} target="_blank" rel="noopener noreferrer">
@@ -4077,7 +4017,6 @@ style={{ background:"rgba(239,68,68,.2)", color:"#f87171", border:"none", border
 </div>
 )}
 <div style={{ display:"flex", gap:6 }}>
-{}
 <input ref={chatImageInputRef} type="file" accept="image/*" style={{ display:"none" }}
 onChange={e=>{ const f=e.target.files?.[0]; if(!f) return; setChatImageFile(f); const url=URL.createObjectURL(f); setChatImagePreview(url); }} />
 <button onClick={()=>chatImageInputRef.current?.click()}
@@ -4121,7 +4060,6 @@ style={{ background: chatImageUploading?"#475569": chatRoom==="group_all"?"#F59E
 );
 })()}
 
-{}
 {activeCard === "jatekok" && (
 <JatekokPane key={gameResetKey} user={user} profiles={profiles} onGameChange={setActiveSubGame} robloxSettings={robloxSettings} saveRobloxSettings={saveRobloxSettings} backroomsSettings={backroomsSettings} saveBackroomsSettings={saveBackroomsSettings} />
 )}
@@ -4143,7 +4081,6 @@ style={{ background: chatImageUploading?"#475569": chatRoom==="group_all"?"#F59E
 <div style={{ fontSize:"0.68rem", color:"#64748b", marginBottom:10 }}>
 Ha beállítasz PIN kódot, belépéskor kérni fogja. A szülő látni fogja a PIN kódodat.
 </div>
-{}
 {user.pin && !pinSaved && (
 <div style={{ display:"flex", alignItems:"center", gap:6, background:"#1e2d4f", border:"1px solid #2d4057", borderRadius:8, padding:"7px 12px", marginBottom:10 }}>
 <span style={{ fontSize:"0.75rem" }}>🔒</span>
@@ -4151,14 +4088,12 @@ Ha beállítasz PIN kódot, belépéskor kérni fogja. A szülő látni fogja a 
 <span style={{ marginLeft:"auto", letterSpacing:"0.3em", color:"#475569", fontSize:"0.72rem", fontWeight:900 }}>••••</span>
 </div>
 )}
-{}
 {pinSaved && (
 <div style={{ display:"flex", alignItems:"center", gap:8, background:"#0f2d1a", border:"1px solid #166534", borderRadius:8, padding:"10px 14px", marginBottom:10 }}>
 <span style={{ fontSize:"1.1rem" }}>✅</span>
 <span style={{ fontSize:"0.78rem", color:"#4ade80", fontWeight:900 }}>PIN kód sikeresen mentve!</span>
 </div>
 )}
-{}
 {!pinDeleteConfirm && (
 <div style={{ display:"flex", gap:8, marginBottom: user.pin ? 8 : 0 }}>
 <input
@@ -4183,7 +4118,6 @@ MENTÉS
 </button>
 </div>
 )}
-{}
 {user.pin && !pinSaved && (
 pinDeleteConfirm ? (
 <div style={{ background:"#2d1515", border:"1px solid #7f1d1d", borderRadius:10, padding:"12px 14px" }}>
@@ -4425,7 +4359,6 @@ const ac = accentColor || "#6366F1";
 
 return (
 <div ref={wrapRef} style={{ marginBottom:6, position:"relative" }}>
-{}
 {chips.length > 0 && (
 <div style={{ display:"flex", flexWrap:"wrap", gap:4, marginBottom:5 }}>
 {chips.map(c => (
@@ -4437,7 +4370,6 @@ return (
 <button onMouseDown={clearAll} style={{ background:"none", border:"none", color:"#EF4444", fontSize:"0.62rem", fontWeight:900, cursor:"pointer", padding:"2px 4px" }}>Mind törlése</button>
 </div>
 )}
-{}
 <div style={{ display:"flex", gap:4, position:"relative" }}>
 <input ref={inputRef} value={query} placeholder={chips.length > 0 ? "＋ Add hozzá..." : placeholder}
 onChange={e => { setQuery(e.target.value); setOpen(true); }}
@@ -4447,7 +4379,6 @@ style={{ flex:1, padding:"5px 7px", borderRadius:7, border:"none", fontWeight:70
 <button type="button" onClick={()=>setOpen(o=>!o)}
 style={{ background:"transparent", color:"#94a3b8", border:"none", borderRadius:7, padding:"5px 9px", fontWeight:900, fontSize:"0.85rem", cursor:"pointer", flexShrink:0 }}>▾</button>
 </div>
-{}
 {open && (
 <div style={{ position:"absolute", zIndex:300, left:0, right:0, background:gc("input"), border:`1.5px solid ${gc("border")}`, borderRadius:10, boxShadow:"0 8px 24px rgba(0,0,0,.4)", maxHeight:220, overflowY:"auto", marginTop:2 }}>
 {query.length > 0 ? (
@@ -4642,7 +4573,6 @@ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition:"transform .2s",
 
 return (
 <div className="pane" style={{ background:"transparent", position:"relative" }}>
-{}
 {showFullResetConfirm && (
 <div style={{ position:"fixed", inset:0, zIndex:99999, background:"rgba(0,0,0,.75)", display:"flex", alignItems:"center", justifyContent:"center" }}>
 <div style={{ background:"white", borderRadius:"1.2rem", padding:"24px 20px", maxWidth:300, width:"90%", textAlign:"center", boxShadow:"0 8px 40px rgba(0,0,0,.4)" }}>
@@ -4666,7 +4596,6 @@ style={{ background:"#EF4444", color:"white", border:"none", borderRadius:8, pad
 </div>
 </div>
 )}
-{}
 {showResetConfirm && (
 <div style={{ position:"fixed", inset:0, zIndex:99999, background:"rgba(0,0,0,.65)", display:"flex", alignItems:"center", justifyContent:"center" }}>
 <div style={{ background:"white", borderRadius:"1.2rem", padding:"24px 20px", maxWidth:300, width:"90%", textAlign:"center", boxShadow:"0 8px 40px rgba(0,0,0,.4)" }}>
@@ -4683,7 +4612,6 @@ style={{ background:"#F59E0B", color:"white", border:"none", borderRadius:8, pad
 </div>
 )}
 <div className="pane-header" style={{ background: (user.cardColor ? `linear-gradient(90deg,${user.cardColor.c1},${user.cardColor.c2})` : "#1E1B4B"), display:"flex", alignItems:"center", justifyContent:"space-between", position:"relative" }}>
-{}
 <div style={{ display:"flex", alignItems:"center", gap:6, position:"relative", minWidth:0 }}>
 <div onClick={()=>setEditAvatar(!editAvatar)} style={{ cursor:"pointer", background:"rgba(255,255,255,.15)", padding:"5px 8px", borderRadius:"50%", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", minWidth:44, minHeight:44 }}><AvatarImg avatar={user.avatar} size={36} /></div>
 {editAvatar && (
@@ -4756,11 +4684,9 @@ style={{ background:"rgba(255,255,255,.15)", border:"none", borderRadius:5, padd
 </div>
 </div>
 </div>
-{}
 <div style={{ position:"absolute", left:120, right:8, textAlign:"center", pointerEvents:"none", overflow:"hidden" }}>
 <div className="pane-header-title" style={{ color:"white", fontWeight:900, fontSize:"1rem", textTransform:"uppercase", letterSpacing:"0.07em", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>Családi Feladatkezelő</div>
 </div>
-{}
 <div className="mobile-hide" style={{ display:"flex", alignItems:"center", gap:8 }}>
 <button onClick={()=>{
 if(!document.fullscreenElement) {
@@ -4774,23 +4700,19 @@ document.exitFullscreen && document.exitFullscreen();
 <button onClick={onLogout} style={{ background:"#EF4444", color:"white", border:"none", borderRadius:7, padding:"8px 12px", minHeight:44, fontWeight:900, fontSize:"0.62rem", textTransform:"uppercase", cursor:"pointer", flexShrink:0 }}>KILÉPÉS</button>
 </div>
 </div>
-{}
 <div className="copyright-bar" style={{ background:"rgba(0,0,0,.25)", textAlign:"center", padding:"3px 8px", flexShrink:0 }}>
 <span style={{ color:"rgba(255,255,255,.4)", fontSize:"0.42rem", fontWeight:600 }}>© 2026 Péter Mihály. All rights reserved. | Designed and Developed by Péter Mihály</span>
 </div>
-{}
 {activeAdminCard !== "jatekok" && <div className="mobile-btn-left">
 <button onClick={(e)=>{ e.stopPropagation(); setNameInput(user.name); setEditingName(true); }} style={{ background:"rgba(255,255,255,.15)", border:"none", borderRadius:8, padding:"7px 10px", color:"white", fontSize:"0.58rem", fontWeight:900, cursor:"pointer", boxShadow:"0 4px 16px rgba(0,0,0,.5)" }}>✏️ NÉV</button>
 {!user.isCoAdmin && <button onClick={()=>setShowFullResetConfirm(true)} style={{ background:"rgba(30,10,10,0.95)", color:"#FCA5A5", border:"1px solid rgba(239,68,68,.5)", borderRadius:8, padding:"7px 10px", fontWeight:900, fontSize:"1.1rem", cursor:"pointer", boxShadow:"0 4px 16px rgba(0,0,0,.5)" }}>🗑</button>}
 </div>}
-{}
 {activeAdminCard !== "jatekok" && <div className="mobile-btn-right">
 <button onClick={onLogout} style={{ background:"#EF4444", color:"white", border:"none", borderRadius:8, padding:"7px 11px", fontWeight:900, fontSize:"0.58rem", textTransform:"uppercase", cursor:"pointer", boxShadow:"0 4px 16px rgba(0,0,0,.5)" }}>KILÉPÉS</button>
 </div>}
 
 <div className="pane-scroll" style={{ position:"relative", zIndex:1 }}>
 
-{}
 {!activeAdminCard && (() => {
 const childCount = children.length;
 const routineCount = routines.length;
@@ -4825,14 +4747,12 @@ onIdxChange={setWheelIdx}
 );
 })()}
 
-{}
 {activeAdminCard && (
 <button onClick={()=>{ if(activeAdminCard==="jatekok" && activeSubGame) { setActiveSubGame(null); setGameResetKey(k=>k+1); } else { setActiveAdminCard(null); setActiveSubGame(null); setGameResetKey(k=>k+1); } }} style={{ display:"flex", alignItems:"center", gap:6, background:"rgba(255,255,255,.12)", border:"none", borderRadius:10, padding:"8px 14px", minHeight:40, color:"white", fontWeight:900, fontSize:"0.75rem", cursor:"pointer", marginBottom:8 }}>
 ← Vissza
 </button>
 )}
 
-{}
 {activeAdminCard === "jelentes" && (() => {
 const JTIME = {
 reggel:   { label:"☀️ REGGEL",  badgeClass:"yellow", sideColor:"#ffd45a", icon:"🧠" },
@@ -5128,7 +5048,6 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
 );
 })()}
 
-{}
 {activeAdminCard === "feladat" && <div className="feladat-panel" style={{ width:"100%", maxWidth:650, margin:"0 auto", backgroundColor:"#11151c", border:"1px solid rgba(255,255,255,0.1)", borderRadius:20, padding:30, boxShadow:"0 20px 40px rgba(0,0,0,0.6)", transform:"scale(1)", transformOrigin:"top center" }}>
 
 {/* HEADER */}
@@ -5280,7 +5199,6 @@ KÜLDÉS
 </div>}
 
 
-{}
 {activeAdminCard === "rutin" && (
 <div style={{
   width:"100%", maxWidth:580, margin:"0 auto",
@@ -5465,7 +5383,6 @@ KÜLDÉS
 </div>
 )}
 
-{}
 {activeAdminCard === "archiv" && <div className="sc archiv-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
 <CollapseHeader open={true} onToggle={()=>{}}
 icon="🗂️" label="Archívum" accentColor="#6B7280" badge={archive.length} />
@@ -5490,7 +5407,6 @@ icon="🗂️" label="Archívum" accentColor="#6B7280" badge={archive.length} />
 </div>
 </div>}
 
-{}
 {activeAdminCard === "csalad" && <div className="sc csalad-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
 <CollapseHeader open={familyOpen} onToggle={()=>setFamilyOpen(o=>!o)}
 icon="👨‍👩‍👧‍👦" label="CSALÁDTAGOK" accentColor="#5b4dff" badge={children.length} />
@@ -5502,7 +5418,6 @@ icon="👨‍👩‍👧‍👦" label="CSALÁDTAGOK" accentColor="#5b4dff" badg
 )}
 {children.map(c=>(
 <div key={c.id} style={{ background:"#0d1117", borderRadius:20, padding:"20px", marginBottom:15, border:"1px solid #0EA5E9", boxShadow:"0 0 18px rgba(14,165,233,0.32), 0 0 40px rgba(14,165,233,0.22)", position:"relative" }}>
-{}
 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
 <div style={{ display:"flex", alignItems:"center", gap:12, fontSize:18, fontWeight:800 }}>
 <AvatarImg avatar={c.avatar} size={36} />
@@ -5533,7 +5448,6 @@ style={{ width:36, height:36, borderRadius:10, background:"#1b2742", border:"1px
 {(!user.isCoAdmin || canEdit("csalad")) && <button onClick={()=>updateData(profiles.filter(p=>p.id!==c.id))} style={{ background:"none", border:"none", color:"#ef4444", fontSize:10, fontWeight:800, cursor:"pointer", textTransform:"uppercase" }}>Törlés</button>}
 </div>
 </div>
-{}
 {(!user.isCoAdmin || canEdit("csalad")) && <>
 <div style={{ fontSize:10, color:"#8b949e", fontWeight:700, marginBottom:6, display:"block", textTransform:"uppercase", letterSpacing:"0.5px" }}>GYEREK PIN KÓD</div>
 <div style={{ marginBottom:15 }}>
@@ -5617,7 +5531,6 @@ style={{ background:"#6366F1", color:"white", border:"none", borderRadius:10, pa
 </div>
 )}
 
-{}
 {profiles.filter(p=>p.isCoAdmin).length > 0 && (
 <div style={{ marginTop:14, marginBottom:6 }}>
 <div style={{ fontSize:13, fontWeight:800, color:"#8b949e", textTransform:"uppercase", letterSpacing:"1.5px", marginTop:30, marginBottom:20, display:"flex", alignItems:"center", gap:10 }}>
@@ -5641,7 +5554,6 @@ style={{ background:"none", border:"none", color:"#ef4444", fontSize:10, fontWei
 </div>
 </div>
 
-{}
 <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
 {PERM_LABELS.map(p => {
 const lvl = getPerm(ca, p.key);
@@ -5654,7 +5566,6 @@ return (
 })}
 </div>
 
-{}
 {editingCoAdminPerms === ca.id && (
 <div style={{ marginTop:10, background:"#0f0a1e", border:"1.5px solid #7C3AED", borderRadius:10, padding:"12px 14px" }}>
 <div style={{ fontSize:"0.72rem", color:"#c4b5fd", fontWeight:900, marginBottom:10 }}>⚙️ Jogosultságok szerkesztése</div>
@@ -5691,7 +5602,6 @@ style={{ background:gc("dark"), color:"#64748b", border:"1px solid #2d4057", bor
 </div>
 )}
 
-{}
 <button onClick={()=>{ setShowAddCoAdmin(!showAddCoAdmin); setCoAdminName(""); setCoAdminAvatar("👩"); setCoAdminPin(""); setCoAdminPerms({rutinok:true,feladatok:true,naptar:true,chat:true,csalad:false,jutalmak:true}); }}
 style={{ width:"100%", background:"transparent", border:"1px dashed rgba(255,255,255,0.1)", color:"#8b949e", padding:"15px", borderRadius:18, fontWeight:700, fontSize:11, cursor:"pointer", marginTop:10, textTransform:"uppercase" }}>
 + ÚJ FELNŐTT PROFIL
@@ -5700,12 +5610,10 @@ style={{ width:"100%", background:"transparent", border:"1px dashed rgba(255,255
 <div style={{ marginTop:10, background:"#0f0a1e", border:"1.5px solid #7C3AED", borderRadius:12, padding:"14px 16px" }}>
 <div style={{ fontSize:"0.82rem", color:"#c4b5fd", fontWeight:900, marginBottom:12 }}>👤 Új felnőtt profil létrehozása</div>
 
-{}
 <div style={{ fontSize:"0.72rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>Név:</div>
 <input value={coAdminName} onChange={e=>setCoAdminName(e.target.value)} placeholder="pl. Édesanya..."
 style={{ width:"100%", padding:"8px 10px", borderRadius:9, border:"1.5px solid #4c1d95", marginBottom:10, fontWeight:700, fontSize:"0.82rem", outline:"none", boxSizing:"border-box" }} />
 
-{}
 <div style={{ fontSize:"0.72rem", color:"#94a3b8", fontWeight:700, marginBottom:6 }}>Avatar:</div>
 <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:10 }}>
 {COADMIN_AVATARS.map(av => (
@@ -5716,12 +5624,10 @@ style={{ fontSize:"1.4rem", background: coAdminAvatar===av?"#4c1d95":gc("dark"),
 ))}
 </div>
 
-{}
 <div style={{ fontSize:"0.72rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>PIN kód (opcionális, 4 szám):</div>
 <input type="password" maxLength="4" value={coAdminPin} onChange={e=>setCoAdminPin(e.target.value.replace(/\D/g,""))} placeholder="••••"
 style={{ width:"100%", padding:"8px 10px", borderRadius:9, border:"1.5px solid #4c1d95", marginBottom:12, fontWeight:700, fontSize:"1rem", outline:"none", letterSpacing:"0.3em", boxSizing:"border-box" }} />
 
-{}
 <div style={{ fontSize:"0.72rem", color:"#94a3b8", fontWeight:700, marginBottom:6 }}>Jogosultságok:</div>
 {PERM_LABELS.map(p => {
 const cur = coAdminPerms[p.key] || "tiltott";
@@ -5744,7 +5650,6 @@ style={{ flex:1, padding:"6px 4px", borderRadius:8, fontWeight:900, fontSize:"0.
 );
 })}
 
-{}
 <div style={{ display:"flex", gap:8, marginTop:12 }}>
 <button onClick={()=>{
 if(!coAdminName.trim()) return;
@@ -5762,7 +5667,6 @@ style={{ background:gc("dark"), color:"#64748b", border:"1px solid #2d4057", bor
 </div>}
 </div>}
 
-{}
 {activeAdminCard === "chat" && (() => {
 const allOthers = profiles.filter(p => p.id !== user.id);
 const getDmRoom = (id1, id2) => "dm_" + [String(id1),String(id2)].sort().join("_");
@@ -5774,7 +5678,6 @@ return (
 <div className="sc" style={{ borderLeft:"5px solid #10B981", overflow:"hidden", display:"flex", flexDirection:"column", minHeight:"40vh", maxWidth:580, margin:"0 auto", width:"100%" }}>
 <div style={{ padding:"12px 16px 8px", fontWeight:900, fontSize:"0.85rem", color:"#34D399" }}>💬 Chat</div>
 
-{}
 <div style={{ display:"flex", gap:6, padding:"0 12px 10px", overflowX:"auto" }}>
 {allOthers.map(p => {
 const room = getDmRoom(user.id, p.id);
@@ -5789,7 +5692,6 @@ style={{ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"cente
 </button>
 );
 })}
-{}
 {(() => {
 const groupRoom = "group_all";
 const isActive = adminChatRoom === groupRoom;
@@ -5805,7 +5707,6 @@ style={{ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"cente
 })()}
 </div>
 
-{}
 {adminChatRoom && (
 <div style={{ padding:"0 16px 8px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
 <div style={{ fontSize:"0.68rem", color: adminChatRoom==="group_all"?"#FCD34D":"#34D399", fontWeight:700, display:"flex", alignItems:"center", gap:6 }}>
@@ -5818,7 +5719,6 @@ style={{ background:"rgba(239,68,68,.2)", color:"#f87171", border:"none", border
 </div>
 )}
 
-{}
 <div className="chat-messages" style={{ flex:1, overflowY:"auto", padding:"0 12px 8px", maxHeight:"38vh", display:"flex", flexDirection:"column", gap:6, scrollbarWidth:"none", msOverflowStyle:"none" }}>
 {!adminChatRoom && <div style={{ textAlign:"center", color:"#475569", fontSize:"0.78rem", padding:"30px 0" }}>👆 Válassz egy személyt a csevegéshez</div>}
 {adminChatRoom && roomMsgs.length===0 && <div style={{ textAlign:"center", color:"#475569", fontSize:"0.78rem", padding:"20px 0" }}>Még nincs üzenet 💭</div>}
@@ -5855,10 +5755,8 @@ style={{ background:"none", border:"none", color:"#475569", cursor:"pointer", fo
 <div ref={adminChatEndRef} />
 </div>
 
-{}
 {adminChatRoom && (
 <div style={{ padding:"8px 12px max(12px, env(safe-area-inset-bottom))", borderTop:"1px solid #1e2d4f" }}>
-{}
 {adminChatImagePreview && (
 <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8, background:gc("input"), borderRadius:10, padding:"6px 10px" }}>
 <a href={adminChatImagePreview} target="_blank" rel="noopener noreferrer">
@@ -5870,7 +5768,6 @@ style={{ background:"rgba(239,68,68,.2)", color:"#f87171", border:"none", border
 </div>
 )}
 <div style={{ display:"flex", gap:6 }}>
-{}
 <input ref={adminChatImageInputRef} type="file" accept="image/*" style={{ display:"none" }}
 onChange={e=>{ const f=e.target.files?.[0]; if(!f) return; setAdminChatImageFile(f); setAdminChatImagePreview(URL.createObjectURL(f)); }} />
 <button onClick={()=>adminChatImageInputRef.current?.click()}
@@ -5911,7 +5808,6 @@ style={{ background: adminChatImageUploading?"#475569": adminChatRoom==="group_a
 );
 })()}
 
-{}
 {activeAdminCard === "privat_naplo" && (
 user.isCoAdmin && !canView("naplo") ? null :
 <div className="privat-naplo-panel" style={{ transform:"scale(1)", transformOrigin:"top center" }}>
@@ -5929,7 +5825,6 @@ clearRoom={(!user.isCoAdmin || canEdit("naplo")) ? clearRoom : null}
 </div>
 )}
 
-{}
 {activeAdminCard === "jatekok" && (
 <div className="jatekok-panel" style={{ maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
 <JatekokPane key={gameResetKey} user={user} profiles={profiles} onGameChange={setActiveSubGame} robloxSettings={robloxSettings} saveRobloxSettings={saveRobloxSettings} backroomsSettings={backroomsSettings} saveBackroomsSettings={saveBackroomsSettings} />
@@ -5958,7 +5853,6 @@ clearRoom={(!user.isCoAdmin || canEdit("naplo")) ? clearRoom : null}
 )}
 {(!user.isCoAdmin || canEdit("beallitas")) && <>
 </>}
-{}
 {!user.isCoAdmin && <div style={{
   borderRadius:28,
   border:"1px solid rgba(110,120,255,.25)",
@@ -6088,7 +5982,6 @@ return (
 })()}
 </div>}
 
-{}
 {!user.isCoAdmin && <>
 <div style={{ height:12 }} />
 <div style={{
@@ -6180,7 +6073,6 @@ return (
 </div>
 </>}
 
-{}
 {user.isCoAdmin && (() => {
 const caProfile = profiles.find(p=>p.id===user.id);
 return (
@@ -6217,7 +6109,6 @@ style={{ background: caProfile?.pinDisabled ? "#374151" : "#22C55E", color:"whit
 
 </>}
 
-{}
 {activeAdminCard === "naptar" && (
 <div className="naptar-panel" style={{ transform:"scale(1)", transformOrigin:"top center" }}>
 <NaptarPane
@@ -6334,7 +6225,6 @@ return (
 style={{ background:"#7C3AED", color:"white", border:"none", borderRadius:8, padding:"5px 12px", fontWeight:900, fontSize:"0.75rem", cursor:"pointer" }}>＋ Új esemény</button>
 </div>
 
-{}
 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
 <button onClick={()=>{ if(calMonth===0){setCalMonth(11);setCalYear(y=>y-1);}else setCalMonth(m=>m-1); }}
 style={{ background:"none", color:"#818cf8", border:"none", fontSize:"1.4rem", fontWeight:900, cursor:"pointer", padding:"0 8px" }}>‹</button>
@@ -6343,14 +6233,12 @@ style={{ background:"none", color:"#818cf8", border:"none", fontSize:"1.4rem", f
 style={{ background:"none", color:"#818cf8", border:"none", fontSize:"1.4rem", fontWeight:900, cursor:"pointer", padding:"0 8px" }}>›</button>
 </div>
 
-{}
 <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", marginBottom:2, touchAction:"manipulation" }}>
 {weekdayLabels.map((d,i)=>(
 <div key={i} style={{ textAlign:"center", fontSize:"0.65rem", fontWeight:700, color:(i>=5)?"#64748b":"#94a3b8", padding:"2px 0" }}>{d}</div>
 ))}
 </div>
 
-{}
 <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:"2px" }}>
 {Array.from({length:firstDay}).map((_,i)=><div key={"e"+i} />)}
 {Array.from({length:daysInMonth}).map((_,i)=>{
@@ -6379,7 +6267,6 @@ style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"4
 })}
 </div>
 
-{}
 <div style={{ marginTop:14, borderTop:"1px solid #2d2d2f", paddingTop:12 }}>
 {iosDayPopup && iosDayPopup.dStr && (
 <div style={{ fontWeight:800, fontSize:"1rem", color:"white", marginBottom:10 }}>
@@ -6392,7 +6279,6 @@ return monthNames[Number(parts[1])-1]+" "+parts[2]+". – "+dn[dt.getDay()];
 </div>
 )}
 
-{}
 {iosDayPopup && (iosDayPopup.mode==="add"||iosDayPopup.mode==="edit") && (
 <div style={{ background:"#2c2c2e", borderRadius:16, padding:"14px 16px", marginBottom:10 }}>
 <div style={{ fontWeight:700, fontSize:"0.7rem", color:"#8e8e93", textTransform:"uppercase", marginBottom:10 }}>
@@ -6421,7 +6307,6 @@ style={{ flex:2, padding:"12px", background:"#7C3AED", color:"white", border:"no
 </div>
 )}
 
-{}
 {iosDayPopup && iosDayPopup.mode==="list" && (() => {
 const dayEvs = myEvents.filter(e=>e.eventDate===iosDayPopup.dStr).sort((a,b)=>(a.eventTime||"").localeCompare(b.eventTime||""));
 return <>
@@ -6535,7 +6420,6 @@ const weekdayLabels = ["H","K","Sz","Cs","P","Sz","V"];
 
 return (
 <div>
-{}
 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
 <button onClick={()=>{ if(calMonth===0){setCalMonth(11);setCalYear(y=>y-1);}else setCalMonth(m=>m-1); }}
 style={{ width:38, height:38, borderRadius:"50%", background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.05)", color:"#8ea7ff", fontSize:"1.3rem", fontWeight:900, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>‹</button>
@@ -6543,13 +6427,11 @@ style={{ width:38, height:38, borderRadius:"50%", background:"rgba(255,255,255,.
 <button onClick={()=>{ if(calMonth===11){setCalMonth(0);setCalYear(y=>y+1);}else setCalMonth(m=>m+1); }}
 style={{ width:38, height:38, borderRadius:"50%", background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.05)", color:"#8ea7ff", fontSize:"1.3rem", fontWeight:900, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>›</button>
 </div>
-{}
 <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", marginBottom:2, touchAction:"manipulation" }}>
 {weekdayLabels.map((d,i)=>(
 <div key={i} style={{ textAlign:"center", fontSize:"0.65rem", fontWeight:700, color:(i>=5)?"#64748b":"#94a3b8", padding:"2px 0" }}>{d}</div>
 ))}
 </div>
-{}
 <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:"2px" }}>
 {Array.from({length:firstDay}).map((_,i)=><div key={"e"+i} />)}
 {Array.from({length:daysInMonth}).map((_,i)=>{
@@ -6579,9 +6461,7 @@ style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"4
 })}
 </div>
 
-{}
 <div style={{ marginTop:14, borderTop:"1px solid #2d2d2f", paddingTop:12 }}>
-{}
 {iosDayPopup && (
 <div style={{ fontWeight:800, fontSize:"1rem", color:"white", marginBottom:10 }}>
 {(() => {
@@ -6593,7 +6473,6 @@ return monthNames[Number(parts[1])-1]+" "+parts[2]+". – "+dn[dt.getDay()];
 </div>
 )}
 
-{}
 {iosDayPopup && (iosDayPopup.mode==="add"||iosDayPopup.mode==="edit") && (
 <div style={{ background:"#2c2c2e", borderRadius:16, padding:"14px 16px", marginBottom:10 }}>
 <div style={{ fontWeight:700, fontSize:"0.7rem", color:"#8e8e93", textTransform:"uppercase", marginBottom:10 }}>
@@ -6624,7 +6503,6 @@ style={{ flex:2, padding:"12px", background:"#0A84FF", color:"white", border:"no
 </div>
 )}
 
-{}
 {iosDayPopup && iosDayPopup.mode==="list" && (() => {
 const dayEvs = (events||[]).filter(e=>e.eventDate===iosDayPopup.dStr && !e.deletedByParent).sort((a,b)=>a.eventTime.localeCompare(b.eventTime));
 return <>
@@ -6655,7 +6533,6 @@ style={{ width:"100%", marginTop:6, padding:"10px", background:"rgba(255,255,255
 </>;
 })()}
 
-{}
 {!iosDayPopup && (() => {
 const upcoming = (events||[]).filter(e=>e.eventDate>=todayStr && !e.deletedByParent).sort((a,b)=>a.eventDate.localeCompare(b.eventDate)||a.eventTime.localeCompare(b.eventTime)).slice(0,5);
 if(upcoming.length===0) return <div style={{ color:"#636366", fontSize:"0.85rem", padding:"4px 0" }}>Nincs közelgő esemény</div>;
@@ -6828,7 +6705,6 @@ alert("✅ Teszt email elküldve: " + ev.email);
 
 return (
 <div className="sc" style={{ background:"rgba(11,24,52,.55)", backdropFilter:"blur(30px)", WebkitBackdropFilter:"blur(30px)", border:"1px solid rgba(255,255,255,.08)", borderRadius:24, overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", boxShadow:"0 20px 60px rgba(0,0,0,.45)" }}>
-{}
 <div style={{ padding:"14px 16px 10px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
   <div style={{ width:32, height:32, borderRadius:10, background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.06)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1rem" }}>🗓️</div>
@@ -6846,12 +6722,10 @@ style={{ background:"linear-gradient(135deg,#7c3aed,#a855f7)", color:"white", bo
 </div>
 </div>
 
-{}
 {showNewEvent && <div style={{ padding:"0 16px 12px" }}>
 <div style={{ background:gc("input"), border:`1.5px solid ${gc("border")}`, borderRadius:12, padding:"14px" }}>
 <div style={{ fontWeight:900, fontSize:"0.78rem", color:"#A78BFA", marginBottom:10 }}>{evEditId?"✏️ Esemény szerkesztése":"➕ Új esemény"}</div>
 
-{}
 <div style={{ marginBottom:8 }}>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>Ikon:</div>
 <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
@@ -6862,21 +6736,18 @@ style={{ background: evEmoji===e?"#7C3AED":gc("dark"), border:`1.5px solid ${evE
 </div>
 </div>
 
-{}
 <div style={{ marginBottom:8 }}>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>Esemény neve: *</div>
 <input value={evTitle} onChange={e=>setEvTitle(e.target.value)} placeholder="pl. Vizsgám van..."
 style={{ width:"100%", padding:"8px 10px", borderRadius:9, border:`1.5px solid ${gc("border")}`, fontWeight:700, fontSize:"0.82rem", outline:"none" }} />
 </div>
 
-{}
 <div style={{ marginBottom:8 }}>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>Leírás (opcionális):</div>
 <textarea value={evDesc} onChange={e=>setEvDesc(e.target.value)} placeholder="További részletek..." rows={2}
 style={{ width:"100%", padding:"8px 10px", borderRadius:9, border:`1.5px solid ${gc("border")}`, fontWeight:700, fontSize:"0.78rem", outline:"none", resize:"none" }} />
 </div>
 
-{}
 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:8 }}>
 <div>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>📅 Dátum: *</div>
@@ -6890,14 +6761,12 @@ style={{ width:"100%", padding:"8px 10px", borderRadius:9, border:`1.5px solid $
 </div>
 </div>
 
-{}
 <div style={{ marginBottom:8 }}>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>📍 Helyszín (opcionális):</div>
 <input value={evLocation} onChange={e=>setEvLocation(e.target.value)} placeholder="pl. Iskola, Kórház..."
 style={{ width:"100%", padding:"8px 10px", borderRadius:9, border:`1.5px solid ${gc("border")}`, fontWeight:700, fontSize:"0.78rem", outline:"none" }} />
 </div>
 
-{}
 <div style={{ marginBottom:8 }}>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>🔔 Email értesítés időpontja:</div>
 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:6 }}>
@@ -6927,14 +6796,12 @@ style={{ background:gc("dark"), color:"#94a3b8", border:`1.5px solid ${gc("borde
 </div>
 </div>
 
-{}
 <div style={{ marginBottom:8 }}>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>📧 Email cím (értesítőhöz):</div>
 <input type="email" value={evEmail} onChange={e=>setEvEmail(e.target.value)} placeholder="valaki@gmail.com"
 style={{ width:"100%", padding:"8px 10px", borderRadius:9, border:`1.5px solid ${gc("border")}`, fontWeight:700, fontSize:"0.78rem", outline:"none" }} />
 </div>
 
-{}
 <div style={{ marginBottom:12 }}>
 <div style={{ fontSize:"0.68rem", color:"#94a3b8", fontWeight:700, marginBottom:4 }}>🎵 Riasztás hangja:</div>
 <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
@@ -6960,7 +6827,6 @@ style={{ width:"100%", padding:"10px", background:"#7C3AED", color:"white", bord
 
 <div style={{ padding:"0 16px 16px" }}>
 
-{}
 {calView==="honap" && (
 <IosCalendar
 events={events} todayStr={todayStr}
@@ -6973,7 +6839,6 @@ user={user} updateData={updateData}
 />
 )}
 
-{}
 {calView==="lista" && <div>
 {upcomingEvents.length===0 && pastEvents.length===0 &&
 <div style={{ textAlign:"center", color:"#475569", fontSize:"0.82rem", padding:"20px 0" }}>Még nincs esemény. Adj hozzá egyet! ➕</div>
@@ -8079,7 +7944,6 @@ if(dbError) return (
 
 return (
 <div className="dual-wrap">
-{}
 {syncStatus === "saving" && (
 <div style={{ position:"fixed", bottom:8, left:"50%", transform:"translateX(-50%)", background:"rgba(0,0,0,.7)", color:"white", borderRadius:20, padding:"4px 14px", fontSize:"0.62rem", fontWeight:700, zIndex:99998, pointerEvents:"none" }}>
 ☁️ Mentés...
@@ -8091,7 +7955,6 @@ onClick={()=>setSyncStatus("ok")}>
 ⚠️ Mentési hiba – koppints a bezáráshoz
 </div>
 )}
-{}
 {taskNotif && taskNotif.length > 0 && (
 <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,.7)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:99999, padding:16 }}
 onClick={()=>setTaskNotif(null)}>
@@ -8103,7 +7966,6 @@ onClick={e=>e.stopPropagation()}>
 ? `${taskNotif[0].childName} elvégzett egy feladatot!`
 : `${taskNotif.length} feladat teljesítve!`}
 </div>
-{}
 {Object.entries(taskNotif.reduce((acc, n) => {
 const key = n.childName;
 if(!acc[key]) acc[key] = {avatar: n.childAvatar, routines: [], tasks: []};
@@ -8149,7 +8011,6 @@ style={{ background:"#22C55E", color:"white", border:"none", borderRadius:12, pa
 </div>
 </div>
 )}
-{}
 {globalAlert && globalAlert.type === "event" && (() => {
 const ev = globalAlert.event;
 return (
