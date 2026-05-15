@@ -72,8 +72,28 @@
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: sans-serif; touch-action: manipulation; background: #090f1a; background-attachment:fixed; }
+        body {
+          background-image: url('https://uxwigmwdihbcfhyeywpu.supabase.co/storage/v1/object/public/backgrounds/backgroundsmobil.png');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+        @media (min-width: 768px) {
+          body {
+            background-image: url('https://uxwigmwdihbcfhyeywpu.supabase.co/storage/v1/object/public/backgrounds/backgroundspc.png');
+          }
+        }
+        body::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          background: rgba(5, 10, 25, 0.10);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(10px);
+          z-index: 0;
+          pointer-events: none;
+        }
         #root { height: 100%; position: relative; z-index: 1; }
-        body::before { display: none; }
         .dual-wrap { display: flex; height: 100vh; height: 100dvh; width: 100vw; overflow: hidden; }
         .pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
         .pane-header { padding: 6px 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
