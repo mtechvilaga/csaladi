@@ -161,8 +161,8 @@
           box-shadow: 0 0 18px rgba(14,165,233,0.32), 0 0 40px rgba(14,165,233,0.22) !important;
           border: 1px solid #0EA5E9 !important;
         }
-        .sc { background: #1e2a3a; border-radius: 1rem; margin-bottom: .55rem; overflow: hidden; border: 1px solid #0EA5E9; box-shadow: 0 0 20px rgba(14,165,233,0.35), 0 0 45px rgba(14,165,233,0.35) !important; transition: background .3s, border .3s, box-shadow .3s; }
-        body.modern-theme .sc { background: #1a2535 !important; border: 1px solid #0EA5E9 !important; box-shadow: 0 0 20px rgba(14,165,233,0.35), 0 0 45px rgba(14,165,233,0.35) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+        .sc { background: rgba(255,255,255,0.08); border-radius: 1rem; margin-bottom: .55rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.18); box-shadow: inset 0 1px 8px rgba(255,255,255,0.1), 0 4px 24px rgba(0,0,0,0.25); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background .3s, border .3s, box-shadow .3s; }
+        body.modern-theme .sc { background: rgba(255,255,255,0.08) !important; border: 1px solid rgba(255,255,255,0.18) !important; box-shadow: inset 0 1px 8px rgba(255,255,255,0.1), 0 4px 24px rgba(0,0,0,0.25) !important; backdrop-filter: blur(16px) !important; -webkit-backdrop-filter: blur(16px) !important; }
         .chat-msg-area::-webkit-scrollbar { display: none; }
         .chat-msg-area { scrollbar-width: none; -ms-overflow-style: none; }
         .task-img { height: 65px; background: #7C3AED; position: relative; background-size: cover; background-position: center; }
@@ -1031,7 +1031,7 @@ boxShadow: tab===id?"0 0 14px rgba(34,197,94,0.3)":"none", backdropFilter:"blur(
 return (
 <div style={{ maxWidth:580, margin:"0 auto", width:"100%", paddingBottom:12 }}>
 
-<div style={{ background:"linear-gradient(135deg,#064e3b,#065f46)", borderRadius:24, padding:"22px 22px 18px", marginBottom:14, boxShadow:"0 0 24px rgba(34,197,94,0.22)", border:"1.5px solid #22c55e" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", borderRadius:24, padding:"22px 22px 18px", marginBottom:14, boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)", border:"2px solid rgba(255,255,255,0.25)" }}>
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
 <span style={{ fontSize:"2rem" }}>💰</span>
@@ -1052,7 +1052,7 @@ return (
 { label:"Kiadás",  value:osszkiadas,  color:"#ef4444", emoji:"📉" },
 { label:"Egyenleg",value:egyenleg,    color: egyenleg>=0?"#3b82f6":"#ef4444", emoji:"⚖️" },
 ].map(c => (
-<div key={c.label} style={{ background:"rgba(30,41,59,0.55)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:18, padding:"14px 10px", textAlign:"center", border:"1px solid rgba(255,255,255,.1)" }}>
+<div key={c.label} style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:18, padding:"14px 10px", textAlign:"center", border:"1.5px solid rgba(255,255,255,0.2)" }}>
 <div style={{ fontSize:"1.3rem" }}>{c.emoji}</div>
 <div style={{ color:c.color, fontWeight:800, fontSize:"0.82rem", marginTop:3 }}>{formatFt(c.value)}</div>
 <div style={{ color:"#94a3b8", fontSize:"0.58rem", marginTop:2, textTransform:"uppercase", letterSpacing:"0.05em" }}>{c.label}</div>
@@ -1076,7 +1076,7 @@ return (
 
 {tab === "attekintes" && (
 <div>
-<div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"20px 22px", marginBottom:12, border:"1px solid rgba(255,255,255,.1)" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:28, padding:"20px 22px", marginBottom:12, border:"1.5px solid rgba(255,255,255,0.2)" }}>
 <h2 style={{ margin:"0 0 14px 0", fontSize:15, color:"white", fontWeight:900 }}>📊 Kiadások kategóriánként</h2>
 {KATEGORIAK.map(k => {
 const osszeg = katOsszeg(k.id);
@@ -1103,7 +1103,7 @@ return (
 {osszkiadas === 0 && <div style={{ color:"rgba(255,255,255,.3)", fontSize:"0.72rem", textAlign:"center", padding:"8px 0" }}>Nincs kiadás ebben a hónapban</div>}
 </div>
 
-<div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"20px 22px", border:"1px solid rgba(255,255,255,.1)" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:28, padding:"20px 22px", border:"1.5px solid rgba(255,255,255,0.2)" }}>
 <h2 style={{ margin:"0 0 14px 0", fontSize:15, color:"white", fontWeight:900 }}>🧾 Tételek</h2>
 {monthTetelek.length === 0 && <div style={{ color:"rgba(255,255,255,.3)", fontSize:"0.72rem", textAlign:"center", padding:"8px 0" }}>Nincs rögzített tétel</div>}
 {[...monthTetelek].sort((a,b)=>b.datum.localeCompare(a.datum)).map(t => {
@@ -1130,7 +1130,7 @@ style={{ background:"rgba(239,68,68,.15)", border:"none", borderRadius:8, paddin
 )}
 
 {tab === "rogzit" && (
-<div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"22px", border:"1px solid rgba(255,255,255,.1)" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:28, padding:"22px", border:"1.5px solid rgba(255,255,255,0.2)" }}>
 <h2 style={{ margin:"0 0 18px 0", fontSize:17, display:"flex", alignItems:"center", gap:10, color:"white", fontWeight:900 }}>✏️ Új tétel rögzítése</h2>
 
 <div style={{ display:"flex", gap:8, marginBottom:12 }}>
@@ -1189,7 +1189,7 @@ style={{ width:"100%", padding:"14px", background:"linear-gradient(90deg,#16A34A
 )}
 
 {tab === "budzset" && (
-<div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"22px", border:"1px solid rgba(255,255,255,.1)" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:28, padding:"22px", border:"1.5px solid rgba(255,255,255,0.2)" }}>
 <h2 style={{ margin:"0 0 4px 0", fontSize:17, display:"flex", alignItems:"center", gap:10, color:"white", fontWeight:900 }}>🎯 Havi büdzsé – {monthLabel(selectedMonth)}</h2>
 <div style={{ color:"rgba(255,255,255,.4)", fontSize:"0.65rem", marginBottom:12 }}>Add meg az egyes kategóriákra szánt összeget</div>
 {KATEGORIAK.map(k => {
@@ -1226,7 +1226,7 @@ style={{ width:"100%", padding:"14px", background:"linear-gradient(90deg,#16A34A
 
 {tab === "szamlak" && (
 <div>
-<div style={{ background:"rgba(30,41,59,0.5)", backdropFilter:"blur(10px)", WebkitBackdropFilter:"blur(10px)", borderRadius:28, padding:"22px", marginBottom:12, border:"1px solid rgba(255,255,255,.1)" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:28, padding:"22px", marginBottom:12, border:"1.5px solid rgba(255,255,255,0.2)" }}>
 <h2 style={{ margin:"0 0 18px 0", fontSize:17, display:"flex", alignItems:"center", gap:10, color:"white", fontWeight:900 }}>📄 Új számla rögzítése</h2>
 <div style={{ marginBottom:12 }}>
 <div style={{ color:"#64748b", fontSize:"0.65rem", fontWeight:800, marginBottom:5, textTransform:"uppercase" }}>Név / Leírás</div>
@@ -1851,7 +1851,7 @@ const usedToday = rs.lastUsedDate === todayStr ? (rs.usedToday || 0) : 0;
 const [limitInput, setLimitInput] = useState(String(rs.dailyLimit || 30));
 
 return (
-<div style={{ background:"rgba(15,23,42,0.6)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:24, padding:"22px", marginBottom:14 }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"2px solid rgba(255,255,255,0.25)", borderRadius:24, padding:"22px", marginBottom:14, boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)" }}>
 <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:22 }}>
 <span style={{ fontSize:"1.6rem" }}>🟥</span>
 <div>
@@ -1921,7 +1921,7 @@ const usedToday = bs.lastUsedDate === todayStr ? (bs.usedToday || 0) : 0;
 const [limitInput, setLimitInput] = useState(String(bs.dailyLimit || 30));
 
 return (
-<div style={{ background:"rgba(15,23,42,0.6)", border:"1px solid rgba(168,85,247,0.3)", borderRadius:24, padding:"22px", marginBottom:14 }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"2px solid rgba(255,255,255,0.25)", borderRadius:24, padding:"22px", marginBottom:14, boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)" }}>
 <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:22 }}>
 <span style={{ fontSize:"1.6rem" }}>🌀</span>
 <div>
@@ -2996,7 +2996,7 @@ return (
 <div style={{ display:"flex", flexDirection:"column", gap:0, maxWidth:650, margin:"0 auto", width:"100%" }}>
 {dialog}
 {/* ── FEJLÉC ── */}
-<div style={{ background:"linear-gradient(90deg,#7c3aed,#a855f7)", borderRadius:"28px 28px 0 0", padding:"25px", display:"flex", justifyContent:"space-between", alignItems:"center", boxShadow:"0 4px 20px rgba(124,58,237,0.3)" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", borderRadius:"28px 28px 0 0", padding:"25px", display:"flex", justifyContent:"space-between", alignItems:"center", border:"2px solid rgba(255,255,255,0.25)", borderBottom:"none" }}>
   <div>
     <div style={{ color:"white", fontWeight:900, fontSize:"1.1rem" }}>🔍 Chat Napló</div>
     <div style={{ color:"rgba(255,255,255,0.8)", fontSize:"0.72rem", marginTop:3 }}>Csak te látod · Minden szoba naplózva</div>
@@ -3007,7 +3007,7 @@ return (
 </div>
 
 {/* ── KÁRTYA LISTA ── */}
-<div style={{ background:"rgba(15,23,42,0.6)", backdropFilter:"blur(20px)", border:"1px solid rgba(255,255,255,0.1)", borderTop:"none", borderRadius:"0 0 28px 28px", overflow:"hidden", boxShadow:"0 25px 50px -12px rgba(0,0,0,0.5)", paddingBottom:8 }}>
+<div style={{ background:"rgba(255,255,255,0.05)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"2px solid rgba(255,255,255,0.25)", borderTop:"none", borderRadius:"0 0 28px 28px", overflow:"hidden", paddingBottom:8 }}>
 
 {sortedRooms.length === 0 && (
   <div style={{ padding:"28px 16px", textAlign:"center", color:"#475569", fontSize:"0.82rem" }}>
@@ -3194,10 +3194,11 @@ return (
           width: `${cardW}px`,
           minWidth: 0,
           aspectRatio: "1 / 1.18",
-          background: isDragOver ? "rgba(124,58,237,0.25)" : "rgba(255,255,255,0.04)",
-          backdropFilter: "blur(14px)",
-          border: isDragOver ? "1.5px solid #7C3AED" : "1.5px solid rgba(255,255,255,0.12)",
-          boxShadow: isDragOver ? "0 0 18px rgba(124,58,237,.5)" : "0 4px 18px rgba(0,0,0,0.35)",
+          background: isDragOver ? "rgba(124,58,237,0.25)" : "rgba(255,255,255,0.08)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          border: isDragOver ? "1.5px solid #7C3AED" : "1.5px solid rgba(255,255,255,0.18)",
+          boxShadow: isDragOver ? "0 0 18px rgba(124,58,237,.5)" : "inset 0 1px 8px rgba(255,255,255,0.1), 0 4px 18px rgba(0,0,0,0.3)",
           borderRadius: vw < 400 ? 14 : 20,
           cursor: editMode ? "grab" : "pointer",
           display: "flex",
@@ -3213,8 +3214,8 @@ return (
           position: "relative",
           overflow: "hidden",
         }}
-        onMouseEnter={e=>{ if(!editMode){ e.currentTarget.style.transform="scale(1.04)"; e.currentTarget.style.background="rgba(255,255,255,0.08)"; }}}
-        onMouseLeave={e=>{ if(!editMode){ e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.background="rgba(255,255,255,0.04)"; }}}
+        onMouseEnter={e=>{ if(!editMode){ e.currentTarget.style.transform="scale(1.04)"; e.currentTarget.style.background="rgba(255,255,255,0.14)"; }}}
+        onMouseLeave={e=>{ if(!editMode){ e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.background="rgba(255,255,255,0.08)"; }}}
       >
         {hasBadge && !editMode && (
           <div style={{ position:"absolute", top:7, right:9, background:"#EF4444", color:"white", borderRadius:10, padding:"2px 7px", fontSize:"0.58rem", fontWeight:900, zIndex:2, lineHeight:1.4, minWidth:18, textAlign:"center", boxShadow:"0 2px 6px rgba(0,0,0,.4)" }}>
@@ -3227,10 +3228,10 @@ return (
         <div style={{ width:"72%", aspectRatio:"1/1", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
           {iconSrc
             ? <img src={iconSrc} alt={card.label} style={{ width:"100%", height:"100%", objectFit:"contain", filter:"drop-shadow(0 4px 10px rgba(0,0,0,.5))" }} />
-            : <span style={{ fontSize: window.innerWidth < 400 ? "1.6rem" : "2.2rem" }}>{card.emoji}</span>
+            : <span style={{ fontSize: window.innerWidth < 400 ? "2.4rem" : "3.1rem" }}>{card.emoji}</span>
           }
         </div>
-        <div style={{ color:"white", fontWeight:800, fontSize: window.innerWidth < 400 ? "0.58rem" : "0.68rem", textAlign:"center", lineHeight:1.25, letterSpacing:"0.2px", width:"100%", paddingBottom:2 }}>
+        <div style={{ color:"white", fontWeight:800, fontSize: window.innerWidth < 400 ? "0.76rem" : "0.88rem", textAlign:"center", lineHeight:1.25, letterSpacing:"0.2px", width:"100%", paddingBottom:2 }}>
           {card.label}
         </div>
         {hasBadge && card.badgeLabel && !editMode && (
@@ -4085,7 +4086,7 @@ style={{ background: chatImageUploading?"#475569": chatRoom==="group_all"?"#F59E
 )}
 
 {activeCard === "kinezet" && (
-<div className="sc kinezet-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
+<div className="sc kinezet-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center", background:"transparent", backdropFilter:"none", WebkitBackdropFilter:"none", border:"none", borderRadius:0, boxShadow:"none" }}>
 <div style={{ padding:"14px 16px" }}>
 <ColorPickerSection user={user} profiles={profiles} updateData={updateData} />
 </div>
@@ -4093,10 +4094,10 @@ style={{ background: chatImageUploading?"#475569": chatRoom==="group_all"?"#F59E
 )}
 
 {activeCard === "beallitas" && (
-<div className="sc beallitas-panel" style={{ borderLeft:"5px solid #6B7280", overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%" }}>
+<div className="sc beallitas-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", background:"transparent", backdropFilter:"none", WebkitBackdropFilter:"none", border:"none", borderRadius:0, boxShadow:"none" }}>
 <div style={{ padding:"14px 16px", fontWeight:900, fontSize:"0.88rem", color:"#9CA3AF" }}>⚙️ Beállítások</div>
 <div style={{ padding:"0 16px 16px", display:"flex", flexDirection:"column", gap:12 }}>
-<div style={{ background:gc("dark"), border:`1.5px solid ${gc("border")}`, borderRadius:12, padding:"14px" }}>
+<div style={{ background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:12, padding:"14px" }}>
 <div style={{ fontSize:"0.78rem", color:"#818cf8", fontWeight:900, marginBottom:6 }}>🔐 Saját PIN kód</div>
 <div style={{ fontSize:"0.68rem", color:"#64748b", marginBottom:10 }}>
 Ha beállítasz PIN kódot, belépéskor kérni fogja. A szülő látni fogja a PIN kódodat.
@@ -4817,11 +4818,11 @@ return (
 width:"100%", maxWidth:580, margin:"0 auto",
 padding:"clamp(12px, 3vw, 24px)",
 borderRadius:"clamp(16px, 4vw, 28px)",
-background:"rgba(5,12,28,.68)",
-backdropFilter:"blur(35px)",
-WebkitBackdropFilter:"blur(35px)",
-border:"1px solid rgba(255,255,255,.06)",
-boxShadow:"0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05)",
+background:"rgba(255,255,255,0.08)",
+backdropFilter:"blur(20px)",
+WebkitBackdropFilter:"blur(20px)",
+border:"2px solid rgba(255,255,255,0.25)",
+boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)",
 position:"relative",
 transform:"scale(0.85)",
 transformOrigin:"top center",
@@ -5100,7 +5101,7 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
 );
 })()}
 
-{activeAdminCard === "feladat" && <div className="feladat-panel" style={{ width:"100%", maxWidth:650, margin:"0 auto", backgroundColor:"#11151c", border:"1px solid rgba(255,255,255,0.1)", borderRadius:20, padding:30, boxShadow:"0 20px 40px rgba(0,0,0,0.6)", transform:"scale(1)", transformOrigin:"top center" }}>
+{activeAdminCard === "feladat" && <div className="feladat-panel" style={{ width:"100%", maxWidth:650, margin:"0 auto", background:"rgba(255,255,255,0.08)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"2px solid rgba(255,255,255,0.25)", borderRadius:28, padding:30, boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)", transform:"scale(1)", transformOrigin:"top center" }}>
 
 {/* HEADER */}
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:25 }}>
@@ -5254,12 +5255,14 @@ KÜLDÉS
 {activeAdminCard === "rutin" && (
 <div style={{
   width:"100%", maxWidth:580, margin:"0 auto",
-  background:"#11151c",
-  border:"1px solid rgba(255,255,255,0.1)",
-  borderRadius:24,
+  background:"rgba(255,255,255,0.08)",
+  backdropFilter:"blur(20px)",
+  WebkitBackdropFilter:"blur(20px)",
+  border:"2px solid rgba(255,255,255,0.25)",
+  borderRadius:28,
   transform:"scale(1)", transformOrigin:"top center",
   padding:30,
-  boxShadow:"0 0 40px rgba(99,102,241,0.4)"
+  boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)"
 }}>
   {/* ── FEJLÉC ── */}
   <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:25 }}>
@@ -5459,7 +5462,7 @@ icon="🗂️" label="Archívum" accentColor="#6B7280" badge={archive.length} />
 </div>
 </div>}
 
-{activeAdminCard === "csalad" && <div className="sc csalad-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
+{activeAdminCard === "csalad" && <div className="sc csalad-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center", background:"rgba(255,255,255,0.08)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"2px solid rgba(255,255,255,0.25)", borderRadius:28, boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)" }}>
 <CollapseHeader open={familyOpen} onToggle={()=>setFamilyOpen(o=>!o)}
 icon="👨‍👩‍👧‍👦" label="CSALÁDTAGOK" accentColor="#5b4dff" badge={children.length} />
 {familyOpen && <div style={{ padding:"0 16px 16px" }}>
@@ -5727,7 +5730,7 @@ const roomMsgs = adminChatRoom ? (messages||[]).filter(m=>m.room===adminChatRoom
 const fmt = (ts) => { try { const d=new Date(ts); return d.toLocaleDateString("hu-HU",{month:"short",day:"numeric"})+" "+d.getHours().toString().padStart(2,"0")+":"+d.getMinutes().toString().padStart(2,"0"); } catch(e){return "";} };
 const activePerson = adminChatRoom ? allOthers.find(p=>getDmRoom(user.id,p.id)===adminChatRoom) : null;
 return (
-<div className="sc" style={{ borderLeft:"5px solid #10B981", overflow:"hidden", display:"flex", flexDirection:"column", minHeight:"40vh", maxWidth:580, margin:"0 auto", width:"100%" }}>
+<div className="sc" style={{ overflow:"hidden", display:"flex", flexDirection:"column", minHeight:"40vh", maxWidth:580, margin:"0 auto", width:"100%", background:"rgba(255,255,255,0.08)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"2px solid rgba(255,255,255,0.25)", borderRadius:28, boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)" }}>
 <div style={{ padding:"12px 16px 8px", fontWeight:900, fontSize:"0.85rem", color:"#34D399" }}>💬 Chat</div>
 
 <div style={{ display:"flex", gap:6, padding:"0 12px 10px", overflowX:"auto" }}>
@@ -5886,7 +5889,7 @@ clearRoom={(!user.isCoAdmin || canEdit("naplo")) ? clearRoom : null}
 )}
 
 {activeAdminCard === "kinezet" && (
-<div className="sc kinezet-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center" }}>
+<div className="sc kinezet-panel" style={{ overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", transform:"scale(1)", transformOrigin:"top center", background:"transparent", backdropFilter:"none", WebkitBackdropFilter:"none", border:"none", boxShadow:"none" }}>
 <div style={{ padding:"14px 16px" }}>
 <ColorPickerSection user={user} profiles={profiles} updateData={updateData} />
 </div>
@@ -5907,9 +5910,11 @@ clearRoom={(!user.isCoAdmin || canEdit("naplo")) ? clearRoom : null}
 </>}
 {!user.isCoAdmin && <div style={{
   borderRadius:28,
-  border:"1px solid rgba(110,120,255,.25)",
-  background:"radial-gradient(circle at top left,rgba(120,0,255,.10),transparent 35%),linear-gradient(180deg,#081323,#07111d)",
-  boxShadow:"inset 0 0 35px rgba(0,130,255,.08),0 0 40px rgba(50,80,255,.10)",
+  border:"2px solid rgba(255,255,255,0.25)",
+  background:"rgba(255,255,255,0.08)",
+  backdropFilter:"blur(20px)",
+  WebkitBackdropFilter:"blur(20px)",
+  boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)",
   padding:24,
   maxWidth:580,
   margin:"0 auto 12px",
@@ -6038,9 +6043,11 @@ return (
 <div style={{ height:12 }} />
 <div style={{
   borderRadius:28,
-  border:"1px solid rgba(110,120,255,.25)",
-  background:"radial-gradient(circle at top left,rgba(120,0,255,.10),transparent 35%),linear-gradient(180deg,#081323,#07111d)",
-  boxShadow:"inset 0 0 35px rgba(0,130,255,.08),0 0 40px rgba(50,80,255,.10)",
+  border:"2px solid rgba(255,255,255,0.25)",
+  background:"rgba(255,255,255,0.08)",
+  backdropFilter:"blur(20px)",
+  WebkitBackdropFilter:"blur(20px)",
+  boxShadow:"inset 0 2px 15px rgba(255,255,255,0.15), 0 10px 40px rgba(0,0,0,0.25)",
   padding:24,
   maxWidth:580,
   margin:"0 auto",
@@ -6817,7 +6824,7 @@ alert("✅ Teszt email elküldve: " + ev.email);
 );
 
 return (
-<div className="sc" style={{ background:"rgba(11,24,52,.55)", backdropFilter:"blur(30px)", WebkitBackdropFilter:"blur(30px)", border:"1px solid rgba(255,255,255,.08)", borderRadius:24, overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", boxShadow:"0 20px 60px rgba(0,0,0,.45)" }}>
+<div className="sc" style={{ background:"transparent", backdropFilter:"none", WebkitBackdropFilter:"none", border:"none", borderRadius:24, overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", boxShadow:"none" }}>
 <div style={{ padding:"14px 16px 10px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
   <div style={{ width:32, height:32, borderRadius:10, background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.06)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1rem" }}>🗓️</div>
@@ -7161,7 +7168,7 @@ const PRESET_COLORS_EXTENDED = [
 ];
 
 return (
-<div style={{ background:"#0f172a", borderRadius:20, padding:"20px" }}>
+<div style={{ background:"rgba(255,255,255,0.05)", borderRadius:20, padding:"20px" }}>
 
 {/* Fejléc */}
 <div style={{ color:"#f59e0b", fontWeight:800, display:"flex", alignItems:"center", gap:8, marginBottom:18, textTransform:"uppercase", letterSpacing:1, fontSize:"0.82rem" }}>
