@@ -189,7 +189,7 @@
         input[type="text"], input[type="password"], input[type="date"], input[type="time"], select, textarea {
             background: #0f1f30 !important; color: #e2e8f0 !important; border-color: #2d4057 !important;
         }
-        input[type="text"]::placeholder, textarea::placeholder { color: #64748b !important; }
+        input[type="text"]::placeholder, textarea::placeholder, input::placeholder { color: rgba(255,255,255,0.5) !important; }
         input[type="time"] { color-scheme: dark !important; color: #ffffff !important; font-size: 1rem !important; font-weight: 700 !important; }
         input[type="time"]::-webkit-calendar-picker-indicator,
         input[type="date"]::-webkit-calendar-picker-indicator {
@@ -519,16 +519,14 @@ const STORAGE_KEY = "csaladi_vezerlo_v200";
 // gc("card"), gc("input"), gc("dark"), gc("border"), gc("deep")
 // Ezt appStyle state nélkül is hívhatjuk, mert localStorage-ból olvas
 function gc(type) {
-  let m = false;
-  try { m = localStorage.getItem("app_card_style") === "modern"; } catch(e) {}
   const map = {
-    card:   m ? "#1a2535"  : "#1e2a3a",
-    input:  m ? "#111c2a"  : "#0f1f30",
-    dark:   m ? "#0f1824"  : "#162030",
-    border: m ? "#2a3a50"  : "#2d4057",
-    deep:   m ? "#090f1a"  : "#001a33",
+    card:   "rgba(255,255,255,0.08)",
+    input:  "rgba(255,255,255,0.10)",
+    dark:   "rgba(0,0,0,0.20)",
+    border: "rgba(255,255,255,0.20)",
+    deep:   "rgba(0,0,0,0.30)",
   };
-  return map[type] || "#1e2a3a";
+  return map[type] || "rgba(255,255,255,0.08)";
 }
 
 const ALARM_SOUNDS = [
@@ -4288,12 +4286,14 @@ position:"fixed",
 zIndex:99999,
 left: pos.left,
 width: pos.width,
-background: dm ? "#1a1f2e" : "white",
-border: dm ? `1px solid rgba(99,102,241,0.4)` : `1.5px solid ${bc}`,
+background: dm ? "rgba(15,25,50,0.80)" : "white",
+border: dm ? `1px solid rgba(255,255,255,0.25)` : `1.5px solid ${bc}`,
 borderRadius:12,
 boxShadow:"0 8px 40px rgba(0,0,0,.5)",
 maxHeight:340,
 overflowY:"auto",
+backdropFilter: dm ? "blur(20px)" : "none",
+WebkitBackdropFilter: dm ? "blur(20px)" : "none",
 ...(pos.up
 ? { bottom: window.innerHeight - pos.top + 4, top:"auto" }
 : { top: pos.top })
@@ -4304,13 +4304,13 @@ return (
 <div ref={wrapRef} style={{ position:"relative", flex:1 }}>
   <button ref={btnRef} type="button" onClick={handleOpen}
   style={{ display:"flex", alignItems:"center", width:"100%", height:"100%", minHeight:52, borderRadius:12, border:`1px solid ${open ? ac : "rgba(255,255,255,0.1)"}`, background: open ? "rgba(99,102,241,0.08)" : "rgba(255,255,255,0.03)", cursor:"pointer", padding:"14px 16px", transition:"all .15s" }}>
-    <span style={{ fontSize:14, color:"#94a3b8", fontWeight:500, flex:1, textAlign:"left" }}>Ikon kiválasztása</span>
+    <span style={{ fontSize:14, color:"#ffffff", fontWeight:500, flex:1, textAlign:"left" }}>Ikon kiválasztása</span>
     <span style={{ color: open ? ac : "#94a3b8", fontSize:14, display:"inline-block", transform: open ? "rotate(180deg)" : "none", transition:"transform .2s" }}>▾</span>
   </button>
 {open && (
 <div style={dropStyle}>
-<div style={{ position:"sticky", top:0, background:"#1a1f2e", borderBottom:"1px solid rgba(255,255,255,0.08)", padding:"8px 12px", display:"flex", justifyContent:"space-between", alignItems:"center", zIndex:1 }}>
-<span style={{ fontSize:"0.62rem", fontWeight:900, color:"#94a3b8", textTransform:"uppercase" }}>🎨 Válassz ikont</span>
+<div style={{ position:"sticky", top:0, background:"rgba(0,0,0,0.2)", borderBottom:"1px solid rgba(255,255,255,0.1)", padding:"8px 12px", display:"flex", justifyContent:"space-between", alignItems:"center", zIndex:1 }}>
+<span style={{ fontSize:"0.62rem", fontWeight:900, color:"rgba(255,255,255,0.7)", textTransform:"uppercase" }}>🎨 Válassz ikont</span>
 <button onMouseDown={()=>setOpen(false)} style={{ background:"none", border:"none", color:"#EF4444", fontWeight:900, cursor:"pointer", fontSize:"0.75rem" }}>✕</button>
 </div>
 {ICON_SUGGESTIONS.map(g => (
@@ -4341,7 +4341,7 @@ return (
 <button ref={btnRef} type="button" onClick={handleOpen}
 style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 10px", borderRadius:7, border:`1.5px solid ${open ? ac : bc}`, background: open ? `${ac}10` : "white", cursor:"pointer", width:"100%", transition:"all .15s" }}>
 <span style={{ fontSize:"1.5rem", lineHeight:1 }}>{value}</span>
-<span style={{ fontSize:"0.68rem", color:"#374151", fontWeight:700, flex:1, textAlign:"left" }}>Ikon kiválasztása</span>
+<span style={{ fontSize:"0.68rem", color:"#ffffff", fontWeight:700, flex:1, textAlign:"left" }}>Ikon kiválasztása</span>
 <span style={{ color: open ? ac : "#9CA3AF", fontSize:"0.85rem", display:"inline-block", transform: open ? "rotate(180deg)" : "none", transition:"transform .2s" }}>▾</span>
 </button>
 {open && (
@@ -4428,20 +4428,20 @@ return (
 onChange={e => { setQuery(e.target.value); setOpen(true); }}
 onKeyDown={e => { if(e.key==="Enter" && query.trim()) { addChip(query); } }}
 onBlur={e => { if(query.trim()) { addChip(query); } }}
-style={{ flex:1, padding:"5px 7px", borderRadius:7, border:"none", fontWeight:700, fontSize:"0.85rem", outline:"none", background:"transparent", color:"white" }} />
+style={{ flex:1, padding:"5px 7px", borderRadius:7, border:"none", fontWeight:700, fontSize:"0.85rem", outline:"none", background:"transparent", color:"white", colorScheme:"dark" }} />
 <button type="button" onClick={()=>setOpen(o=>!o)}
-style={{ background:"transparent", color:"#94a3b8", border:"none", borderRadius:7, padding:"5px 9px", fontWeight:900, fontSize:"0.85rem", cursor:"pointer", flexShrink:0 }}>▾</button>
+style={{ background:"transparent", color:"#ffffff", border:"none", borderRadius:7, padding:"5px 9px", fontWeight:900, fontSize:"0.85rem", cursor:"pointer", flexShrink:0 }}>▾</button>
 </div>
 {open && (
-<div style={{ position:"absolute", zIndex:300, left:0, right:0, background:gc("input"), border:`1.5px solid ${gc("border")}`, borderRadius:10, boxShadow:"0 8px 24px rgba(0,0,0,.4)", maxHeight:220, overflowY:"auto", marginTop:2 }}>
+<div style={{ position:"absolute", zIndex:300, left:0, right:0, background:"rgba(15,25,50,0.80)", backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)", border:"1.5px solid rgba(255,255,255,0.25)", borderRadius:10, boxShadow:"0 8px 24px rgba(0,0,0,.8)", maxHeight:220, overflowY:"auto", marginTop:2 }}>
 {query.length > 0 ? (
 filtered.length === 0
-? <div style={{ padding:"10px", color:"#64748b", fontSize:"0.7rem", textAlign:"center" }}>Nincs találat – nyomj Entert a hozzáadáshoz!</div>
+? <div style={{ padding:"10px", color:"rgba(255,255,255,0.6)", fontSize:"0.7rem", textAlign:"center" }}>Nincs találat – nyomj Entert a hozzáadáshoz!</div>
 : filtered.map((f,i) => (
 <div key={i} onMouseDown={()=>addChip(f.item)}
-style={{ padding:"6px 10px", cursor:"pointer", fontSize:"0.72rem", fontWeight:700, borderBottom:"1px solid #1a2d40", display:"flex", justifyContent:"space-between", alignItems:"center", background: chips.includes(f.item) ? "#0f2d1a" : gc("input"), color:"#e2e8f0" }}
-onMouseEnter={e=>e.currentTarget.style.background=gc("dark")}
-onMouseLeave={e=>e.currentTarget.style.background=chips.includes(f.item)?"#0f2d1a":gc("input")}>
+style={{ padding:"6px 10px", cursor:"pointer", fontSize:"0.72rem", fontWeight:700, borderBottom:"1px solid rgba(255,255,255,0.08)", display:"flex", justifyContent:"space-between", alignItems:"center", background: chips.includes(f.item) ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.03)", color:"#ffffff" }}
+onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.15)"}
+onMouseLeave={e=>e.currentTarget.style.background=chips.includes(f.item)?"rgba(16,185,129,0.2)":"transparent"}>
 <span>{f.item}</span>
 <span style={{ color: chips.includes(f.item) ? ac : "#9CA3AF", fontSize:"0.6rem" }}>{chips.includes(f.item) ? "✓" : f.group}</span>
 </div>
@@ -4449,12 +4449,12 @@ onMouseLeave={e=>e.currentTarget.style.background=chips.includes(f.item)?"#0f2d1
 ) : (
 getTaskSuggestions().map(g => (
 <div key={g.group}>
-<div style={{ padding:"5px 10px 2px", fontSize:"0.6rem", fontWeight:900, color:"#94a3b8", textTransform:"uppercase", background:gc("dark"), letterSpacing:"0.05em" }}>{g.group}</div>
+<div style={{ padding:"5px 10px 2px", fontSize:"0.6rem", fontWeight:900, color:"#a5b4fc", textTransform:"uppercase", background:"rgba(0,0,0,0.4)", letterSpacing:"0.05em" }}>{g.group}</div>
 {g.items.map(item => (
 <div key={item} onMouseDown={()=>addChip(item)}
-style={{ padding:"5px 14px", cursor:"pointer", fontSize:"0.72rem", fontWeight:700, borderBottom:"1px solid #1a2d40", background: chips.includes(item) ? "#0f2d1a" : gc("input"), display:"flex", justifyContent:"space-between", color:"#e2e8f0" }}
-onMouseEnter={e=>e.currentTarget.style.background=gc("dark")}
-onMouseLeave={e=>e.currentTarget.style.background=chips.includes(item)?"#0f2d1a":gc("input")}>
+style={{ padding:"5px 14px", cursor:"pointer", fontSize:"0.72rem", fontWeight:700, borderBottom:"1px solid rgba(255,255,255,0.08)", background: chips.includes(item) ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.03)", display:"flex", justifyContent:"space-between", color:"#ffffff" }}
+onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.15)"}
+onMouseLeave={e=>e.currentTarget.style.background=chips.includes(item)?"rgba(16,185,129,0.2)":"transparent"}>
 <span>{item}</span>
 {chips.includes(item) && <span style={{ color:ac, fontSize:"0.7rem" }}>✓</span>}
 </div>
@@ -5106,13 +5106,13 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
 {/* HEADER */}
 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:25 }}>
   <div style={{ display:"flex", alignItems:"center", gap:15 }}>
-    <div style={{ width:45, height:45, border:"1px solid #6366f1", borderRadius:"50%", display:"flex", justifyContent:"center", alignItems:"center", color:"#6366f1", fontSize:24, boxShadow:"0 0 10px rgba(99,102,241,0.3)", flexShrink:0 }}>+</div>
+    <div style={{ width:45, height:45, border:"1px solid rgba(255,255,255,0.4)", borderRadius:"50%", display:"flex", justifyContent:"center", alignItems:"center", color:"#ffffff", fontSize:24, boxShadow:"none", flexShrink:0 }}>+</div>
     <div>
       <div style={{ fontSize:18, letterSpacing:1, textTransform:"uppercase", fontWeight:900, color:"white" }}>Új feladat</div>
-      <div style={{ fontSize:13, color:"#94a3b8", marginTop:2 }}>Hozz létre egy új feladatot a listádhoz</div>
+      <div style={{ fontSize:13, color:"#ffffff", marginTop:2 }}>Hozz létre egy új feladatot a listádhoz</div>
     </div>
   </div>
-  <div style={{ color:"#94a3b8", fontSize:12, cursor:"pointer" }} onClick={()=>setTaskOpen(o=>!o)}>{taskOpen ? "▲" : "▼"}</div>
+  <div style={{ color:"#ffffff", fontSize:12, cursor:"pointer" }} onClick={()=>setTaskOpen(o=>!o)}>{taskOpen ? "▲" : "▼"}</div>
 </div>
 
 {user.isCoAdmin && !canEdit("feladatok") && (
@@ -5128,17 +5128,17 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
   <div style={{ backgroundColor:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:12, padding:"8px 15px", display:"flex", alignItems:"center" }}
     onFocus={e=>e.currentTarget.style.border="1px solid #6366f1"}
     onBlur={e=>e.currentTarget.style.border="1px solid rgba(255,255,255,0.15)"}>
-    <span style={{ color:"#94a3b8", marginRight:12, fontSize:16, flexShrink:0 }}>📄</span>
+    <span style={{ color:"#ffffff", marginRight:12, fontSize:16, flexShrink:0 }}>📄</span>
     <div style={{ flex:1, minWidth:0, background:"transparent" }}>
       <TaskSuggestInput key={taskKey} borderColor="transparent" placeholder="Feladat neve vagy válassz listából..." accentColor="#6366f1" onChipsChange={chips => { setTaskChips(chips); taskChipsRef.current = chips; }} />
     </div>
-    <span style={{ color:"#94a3b8", fontSize:14, marginLeft:10, flexShrink:0 }}>▼</span>
+    <span style={{ color:"#ffffff", fontSize:14, marginLeft:10, flexShrink:0 }}>▼</span>
   </div>
 </div>
 
 {/* IKON */}
 <div style={{ marginBottom:20 }}>
-  <div style={{ fontSize:11, fontWeight:700, color:"#4f46e5", textTransform:"uppercase", marginBottom:8 }}>⭐ Ikon</div>
+  <div style={{ fontSize:11, fontWeight:700, color:"#ffffff", textTransform:"uppercase", marginBottom:8 }}>⭐ Ikon</div>
   <div style={{ display:"flex", alignItems:"stretch", gap:10 }}>
     <div style={{ width:52, minHeight:52, background:"linear-gradient(135deg,#fbbf24,#d97706)", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.6rem", flexShrink:0, boxShadow:"0 4px 14px rgba(217,119,6,0.3)" }}>{taskEmoji}</div>
     <EmojiDropdown value={taskEmoji} onChange={setTaskEmoji} accentColor="#6366f1" borderColor="rgba(255,255,255,0.1)" label="" darkMode={true} />
@@ -5147,35 +5147,35 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
 
 {/* KINEK + PONT */}
 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20, marginBottom:20 }}>
-  <div>
-    <div style={{ fontSize:11, fontWeight:700, color:"#4f46e5", textTransform:"uppercase", marginBottom:8 }}>👤 Kinek</div>
-    <div style={{ backgroundColor:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"13px 14px", display:"flex", alignItems:"center" }}>
-      <span style={{ color:"#6366f1", marginRight:10, fontSize:17, flexShrink:0 }}>👤</span>
-      <select ref={tChildRef} style={{ background:"transparent", border:"none", color:"white", width:"100%", outline:"none", fontSize:14 }}>
-        <option value="ALL" style={{ background:"#11151c" }}>Mindenkinek</option>
-        {children.map(c=><option key={c.id} value={c.id} style={{ background:"#11151c" }}>{c.name}</option>)}
+  <div style={{ position:"relative" }}>
+    <div style={{ fontSize:11, fontWeight:700, color:"#ffffff", textTransform:"uppercase", marginBottom:8 }}>👤 Kinek</div>
+    <div style={{ position:"relative" }}>
+      <select ref={tChildRef} style={{ width:"100%", padding:"13px 36px 13px 40px", borderRadius:10, border:"1px solid rgba(255,255,255,0.25)", background:"rgba(15,25,50,0.80)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", color:"white", fontSize:14, outline:"none", appearance:"none", WebkitAppearance:"none", cursor:"pointer" }}>
+        <option value="ALL" style={{ background:"#0f1932" }}>Mindenkinek</option>
+        {children.map(c=><option key={c.id} value={c.id} style={{ background:"#0f1932" }}>{c.name}</option>)}
       </select>
-      <span style={{ color:"#94a3b8", fontSize:14, marginLeft:6, flexShrink:0 }}>▼</span>
+      <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", fontSize:17, pointerEvents:"none" }}>👤</span>
+      <span style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", color:"white", fontSize:12, pointerEvents:"none" }}>▼</span>
     </div>
   </div>
-  <div>
-    <div style={{ fontSize:11, fontWeight:700, color:"#4f46e5", textTransform:"uppercase", marginBottom:8 }}>⊕ Pont</div>
-    <div style={{ backgroundColor:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"13px 14px", display:"flex", alignItems:"center" }}>
-      <select ref={tGoldRef} style={{ background:"transparent", border:"none", color:"white", width:"100%", outline:"none", fontSize:14 }}>
+  <div style={{ position:"relative" }}>
+    <div style={{ fontSize:11, fontWeight:700, color:"#ffffff", textTransform:"uppercase", marginBottom:8 }}>⊕ Pont</div>
+    <div style={{ position:"relative" }}>
+      <select ref={tGoldRef} style={{ width:"100%", padding:"13px 36px 13px 14px", borderRadius:10, border:"1px solid rgba(255,255,255,0.25)", background:"rgba(15,25,50,0.80)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", color:"white", fontSize:14, outline:"none", appearance:"none", WebkitAppearance:"none", cursor:"pointer" }}>
         {[-10,-5,-3,-2,-1,1,2,3,4,5,6,7,8,9,10].map(v=>(
-          <option key={v} value={v} style={{ background:"#11151c", color: v < 0 ? "#EF4444" : "white" }}>
+          <option key={v} value={v} style={{ background:"#0f1932", color: v < 0 ? "#EF4444" : "white" }}>
             {v < 0 ? `${v} pont (levonás)` : `+${v} pont`}
           </option>
         ))}
       </select>
-      <span style={{ color:"#94a3b8", fontSize:14, marginLeft:6, flexShrink:0 }}>▼</span>
+      <span style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", color:"white", fontSize:12, pointerEvents:"none" }}>▼</span>
     </div>
   </div>
 </div>
 
 {/* SAJÁT KÉP */}
 <div style={{ marginBottom:20 }}>
-  <div style={{ fontSize:11, fontWeight:700, color:"#4f46e5", textTransform:"uppercase", marginBottom:8 }}>🖼️ Saját kép (felülírja az ikont)</div>
+  <div style={{ fontSize:11, fontWeight:700, color:"#ffffff", textTransform:"uppercase", marginBottom:8 }}>🖼️ Saját kép (felülírja az ikont)</div>
   <div style={{ border:"1px solid rgba(255,255,255,0.12)", borderRadius:12, padding:"8px 10px", display:"flex", alignItems:"center", gap:12, background:"rgba(255,255,255,0.03)" }}>
     <label style={{ background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.12)", color:"white", padding:"9px 16px", borderRadius:8, fontSize:13, display:"flex", alignItems:"center", gap:8, cursor:"pointer", flexShrink:0, fontWeight:600 }}>
       📤 Fájl kiválasztása
@@ -5190,7 +5190,7 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
 {/* DÁTUM + IDŐ */}
 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20, marginBottom:20 }}>
   <div>
-    <div style={{ fontSize:11, fontWeight:700, color:"#4f46e5", textTransform:"uppercase", marginBottom:8 }}>📅 Esedékes dátum (üresen = MA)</div>
+    <div style={{ fontSize:11, fontWeight:700, color:"#ffffff", textTransform:"uppercase", marginBottom:8 }}>📅 Esedékes dátum (üresen = MA)</div>
     <div style={{ backgroundColor:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:12, padding:"12px 15px" }}>
       <input type="date" value={taskDueDate} onChange={e=>setTaskDueDate(e.target.value)}
         style={{ background:"transparent", border:"none", color:"white", width:"100%", outline:"none", fontSize:14, colorScheme:"dark" }} />
@@ -5198,7 +5198,7 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
     {taskDueDate && <div style={{ fontSize:"0.65rem", color:"#a78bfa", fontWeight:700, marginTop:3 }}>⚠️ Csak ezen a napon jelenik meg</div>}
   </div>
   <div>
-    <div style={{ fontSize:11, fontWeight:700, color:"#4f46e5", textTransform:"uppercase", marginBottom:8 }}>🔒 Elérhető ettől</div>
+    <div style={{ fontSize:11, fontWeight:700, color:"#ffffff", textTransform:"uppercase", marginBottom:8 }}>🔒 Elérhető ettől</div>
     <div style={{ backgroundColor:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:12, padding:"12px 15px", display:"flex", alignItems:"center" }}>
       <input type="time" value={taskAvailableFrom} onChange={e=>setTaskAvailableFrom(e.target.value)}
         style={{ background:"transparent", border:"none", color:"white", flex:1, outline:"none", fontSize:14, colorScheme:"dark" }} />
@@ -5209,7 +5209,7 @@ style={{ background:"rgba(255,255,255,.1)", color:"#94a3b8", border:"none", bord
 
 {/* NAPOK */}
 <div style={{ marginBottom:20 }}>
-  <div style={{ fontSize:11, fontWeight:700, color:"#4f46e5", textTransform:"uppercase", marginBottom:8 }}>🗓️ Melyik napokon</div>
+  <div style={{ fontSize:11, fontWeight:700, color:"#ffffff", textTransform:"uppercase", marginBottom:8 }}>🗓️ Melyik napokon</div>
   <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
     {DAYS.map((d,i)=>(
       <div key={i} onClick={()=>setTaskDays(prev=>prev.includes(i)?prev.filter(x=>x!==i):[...prev,i])}
@@ -5275,7 +5275,7 @@ KÜLDÉS
         <div style={{ margin:0, fontSize:18, fontWeight:900, textTransform:"uppercase", letterSpacing:"1.5px", color:"white" }}>
           Napi Rutin <span style={{ color:"#94a3b8" }}>{routines.length}</span>
         </div>
-        <div style={{ marginTop:4, fontSize:13, color:"#94a3b8" }}>Hozz létre vagy szerkessz egy rutint a listádhoz</div>
+        <div style={{ marginTop:4, fontSize:13, color:"#ffffff" }}>Hozz létre vagy szerkessz egy rutint a listádhoz</div>
       </div>
     </div>
     <div style={{ color:"#94a3b8", fontSize:12, cursor:"pointer" }} onClick={()=>setRoutineOpen(o=>!o)}>
@@ -5298,7 +5298,7 @@ KÜLDÉS
 
     {/* ── IKON ── */}
     <div style={{ marginBottom:20 }}>
-      <div style={{ fontSize:11, fontWeight:800, color:"#4f46e5", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>⭐ Ikon:</div>
+      <div style={{ fontSize:11, fontWeight:800, color:"#ffffff", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>⭐ Ikon:</div>
       <div style={{ background:"rgba(255,255,255,0.03)", border:"1.5px solid #6366f1", borderRadius:14, padding:"4px 10px", display:"flex", alignItems:"center" }}>
         <EmojiDropdown value={routineIcon} onChange={setRoutineIcon} accentColor="#6366f1" borderColor="transparent" label="" darkMode={true} />
       </div>
@@ -5306,7 +5306,7 @@ KÜLDÉS
 
     {/* ── KINEK SZÓL ── */}
     <div style={{ marginBottom:20 }}>
-      <div style={{ fontSize:11, fontWeight:800, color:"#4f46e5", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>👤 Kinek szól:</div>
+      <div style={{ fontSize:11, fontWeight:800, color:"#ffffff", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>👤 Kinek szól:</div>
       <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:14, padding:"14px 18px", display:"flex", alignItems:"center", gap:10 }}>
         <span style={{ color:"#6366f1" }}>👤</span>
         <select ref={rChildRef} style={{ background:"transparent", border:"none", color:"white", width:"100%", outline:"none", fontSize:14 }}>
@@ -5318,7 +5318,7 @@ KÜLDÉS
 
     {/* ── NAPSZAK ── */}
     <div style={{ marginBottom:20 }}>
-      <div style={{ fontSize:11, fontWeight:800, color:"#4f46e5", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>🕒 Napszak:</div>
+      <div style={{ fontSize:11, fontWeight:800, color:"#ffffff", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>🕒 Napszak:</div>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12 }}>
         {[{val:"reggel",label:"🌅 Reggel"},{val:"del",label:"☀️ Dél"},{val:"este",label:"🌙 Este"},{val:"egesznap",label:"🌍 Egész nap"}].map(t=>{
           const active = routineTime.includes(t.val);
@@ -5342,7 +5342,7 @@ KÜLDÉS
     {/* ── NAPOK + IDŐ ── */}
     <div style={{ display:"grid", gridTemplateColumns:"1.2fr 0.8fr", gap:20, marginBottom:20 }}>
       <div>
-        <div style={{ fontSize:11, fontWeight:800, color:"#4f46e5", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>📅 Melyik napokon:</div>
+        <div style={{ fontSize:11, fontWeight:800, color:"#ffffff", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>📅 Melyik napokon:</div>
         <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
           {DAYS.map((d,i)=>(
             <div key={i} onClick={()=>setRoutineDays(prev=>prev.includes(i)?prev.filter(x=>x!==i):[...prev,i])}
@@ -5369,7 +5369,7 @@ KÜLDÉS
         </div>
       </div>
       <div>
-        <div style={{ fontSize:11, fontWeight:800, color:"#4f46e5", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>🔒 Elérhető ettől:</div>
+        <div style={{ fontSize:11, fontWeight:800, color:"#ffffff", textTransform:"uppercase", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>🔒 Elérhető ettől:</div>
         <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:14, padding:"14px 18px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <input type="time" value={routineAvailableFrom} onChange={e=>setRoutineAvailableFrom(e.target.value)}
             style={{ background:"transparent", border:"none", color:"white", outline:"none", fontSize:14, width:"100%" }} placeholder="--:--" />
