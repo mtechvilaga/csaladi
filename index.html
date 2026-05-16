@@ -3771,11 +3771,11 @@ boxShadow:`0 0 14px rgba(${iconRgb},.25)`,
 </div>
 {/* Kész jelző / gomb */}
 {done ? (
-<div style={{ width:34, height:34, borderRadius:"50%", border:`2.5px solid #22C55E`, background:"rgba(34,197,94,.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, boxShadow:"0 0 12px rgba(34,197,94,.45)" }}>
+<div style={{ width:38, height:38, borderRadius:"50%", border:`2.5px solid #22C55E`, background:"rgba(34,197,94,.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, boxShadow:"0 0 12px rgba(34,197,94,.45)" }}>
 <span style={{ color:"#22C55E", fontWeight:900, fontSize:"1.1rem" }}>✓</span>
 </div>
 ) : locked ? (
-<div style={{ width:34, height:34, borderRadius:"50%", border:"2.5px solid #475569", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+<div style={{ width:38, height:38, borderRadius:"50%", border:"2.5px solid #475569", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
 <span style={{ fontSize:"0.8rem" }}>🔒</span>
 </div>
 ) : (
@@ -3786,7 +3786,7 @@ const {data:cur} = await _supabase.from('csaladi_app').select('notifications').e
 const existing = (cur && cur.notifications) || [];
 await _supabase.from('csaladi_app').update({notifications:[...existing,{type:'routine',childName:user.name,childAvatar:user.avatar,taskText:r.text,gold:0,time:new Date().toLocaleTimeString('hu-HU',{hour:'2-digit',minute:'2-digit'})}]}).eq('id','main');
 }}
-style={{ width:34, height:34, borderRadius:"50%", border:`2.5px dashed ${accentColor}`, background:"transparent", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, cursor:"pointer", touchAction:"manipulation" }} />
+style={{ width:38, height:38, borderRadius:"50%", border:`2.5px dashed ${accentColor}`, background:"transparent", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, cursor:"pointer", touchAction:"manipulation" }} />
 )}
 {/* Elválasztó + kuka */}
 <div style={{ width:1, height:34, background:"rgba(255,255,255,.1)", flexShrink:0 }} />
@@ -6355,7 +6355,7 @@ style={{ background:"none", color:"#818cf8", border:"none", fontSize:"1.4rem", f
 
 <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", marginBottom:2, touchAction:"manipulation" }}>
 {weekdayLabels.map((d,i)=>(
-<div key={i} style={{ textAlign:"center", fontSize:"0.82rem", fontWeight:900, color:(i>=5)?"#f87171":"#ffffff", padding:"4px 0", textShadow:"0 1px 4px rgba(0,0,0,0.4)" }}>{d}</div>
+<div key={i} style={{ textAlign:"center", fontSize:"0.92rem", fontWeight:900, color:(i===6)?"#EA0023":"#ffffff", padding:"4px 0", textShadow:"0 1px 4px rgba(0,0,0,0.4)" }}>{d}</div>
 ))}
 </div>
 
@@ -6374,8 +6374,8 @@ return (
 onTouchStart={e=>e.currentTarget.style.opacity="0.6"}
 onTouchEnd={e=>e.currentTarget.style.opacity="1"}
 style={{ display:"flex", flexDirection:"column", alignItems:"center", padding:"4px 0", cursor:"pointer", minHeight:44, touchAction:"manipulation" }}>
-<div style={{ width:32, height:32, borderRadius:"50%", background:isToday?"#FF3B30":isSelected?"#3a3a3c":"transparent", display:"flex", alignItems:"center", justifyContent:"center" }}>
-<span style={{ fontSize:"1rem", fontWeight:isToday||isSelected?900:700, color:isToday?"white":isSelected?"#A78BFA":isWknd?"#64748b":"#e2e8f0" }}>{d}</span>
+<div style={{ width:38, height:38, borderRadius:"50%", background:isToday?"#FF3B30":isSelected?"#3a3a3c":"transparent", display:"flex", alignItems:"center", justifyContent:"center" }}>
+<span style={{ fontSize:"1.25rem", fontWeight:isToday||isSelected?900:700, color:isToday?"white":isSelected?"#A78BFA":dow===6?"#EA0023":"#e2e8f0" }}>{d}</span>
 </div>
 <div style={{ display:"flex", gap:2, justifyContent:"center", marginTop:2 }}>
 {dayEvs.slice(0,3).map(ev=>(
@@ -6549,7 +6549,7 @@ style={{ width:38, height:38, borderRadius:"50%", background:"rgba(255,255,255,.
 </div>
 <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", marginBottom:2, touchAction:"manipulation" }}>
 {weekdayLabels.map((d,i)=>(
-<div key={i} style={{ textAlign:"center", fontSize:"0.82rem", fontWeight:900, color:(i>=5)?"#f87171":"#ffffff", padding:"4px 0", textShadow:"0 1px 4px rgba(0,0,0,0.4)" }}>{d}</div>
+<div key={i} style={{ textAlign:"center", fontSize:"0.92rem", fontWeight:900, color:(i===6)?"#EA0023":"#ffffff", padding:"4px 0", textShadow:"0 1px 4px rgba(0,0,0,0.4)" }}>{d}</div>
 ))}
 </div>
 <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:"2px" }}>
@@ -6824,11 +6824,11 @@ alert("✅ Teszt email elküldve: " + ev.email);
 );
 
 return (
-<div className="sc" style={{ background:"rgba(0,0,0,0.15)", backdropFilter:"none", WebkitBackdropFilter:"none", border:"none", borderRadius:24, overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", boxShadow:"none" }}>
+<div className="sc" style={{ background:"rgba(0,0,0,0.25)", backdropFilter:"none", WebkitBackdropFilter:"none", border:"none", borderRadius:24, overflow:"hidden", maxWidth:580, margin:"0 auto", width:"100%", boxShadow:"none" }}>
 <div style={{ padding:"14px 16px 10px", display:"flex", justifyContent:"space-between", alignItems:"center", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
   <div style={{ width:32, height:32, borderRadius:10, background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.06)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1rem" }}>🗓️</div>
-  <div style={{ fontWeight:900, fontSize:"0.88rem", color:"#b7c8ff", letterSpacing:"0.02em" }}>Naptár & Események</div>
+  <div style={{ fontWeight:900, fontSize:"1rem", color:"#ffffff", letterSpacing:"0.02em" }}>Naptár & Események</div>
 </div>
 <div style={{ display:"flex", gap:6 }}>
 <button onClick={()=>setCalView(v=>v==="lista"?"honap":"lista")}
@@ -6836,14 +6836,14 @@ style={{ background:"rgba(255,255,255,.06)", color:"#8ea7ff", border:"1px solid 
 {calView==="lista"?"📆 Havi":"📋 Lista"}
 </button>
 <button onClick={()=>{ setEvEditId(null); setShowNewEvent(s=>!s); }}
-style={{ background:"linear-gradient(135deg,#7c3aed,#a855f7)", color:"white", border:"none", borderRadius:10, padding:"5px 12px", fontWeight:900, fontSize:"0.68rem", cursor:"pointer", boxShadow:"0 4px 14px rgba(168,85,247,.35)" }}>
+style={{ background:"rgba(255,255,255,0.08)", color:"white", border:"2px solid rgba(255,255,255,0.25)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:10, padding:"5px 12px", fontWeight:900, fontSize:"0.68rem", cursor:"pointer", boxShadow:"inset 0 1px 8px rgba(255,255,255,0.1)" }}>
 {showNewEvent?"✕ Mégse":"＋ Új esemény"}
 </button>
 </div>
 </div>
 
 {showNewEvent && <div style={{ padding:"0 16px 12px" }}>
-<div style={{ background:gc("input"), border:`1.5px solid ${gc("border")}`, borderRadius:12, padding:"14px" }}>
+<div style={{ background:"rgba(255,255,255,0.08)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", border:"2px solid rgba(255,255,255,0.25)", borderRadius:16, padding:"14px", boxShadow:"inset 0 1px 8px rgba(255,255,255,0.1)" }}>
 <div style={{ fontWeight:900, fontSize:"0.78rem", color:"#A78BFA", marginBottom:10 }}>{evEditId?"✏️ Esemény szerkesztése":"➕ Új esemény"}</div>
 
 <div style={{ marginBottom:8 }}>
