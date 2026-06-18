@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Családi Feladatkezelő</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#fff;
+  background:
+    linear-gradient(rgba(28,18,9,.06),rgba(28,18,9,.18)),
+    url('family-bg.jpg') center/cover no-repeat fixed;
+  overflow:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;
+  backdrop-filter:blur(9px);
+  background:rgba(111,84,46,.08);
+}
+.app{
+  width:1071px;height:792px;padding:18px;border-radius:26px;
+  background:rgba(255,255,255,.04);
+}
+.glass{
+  background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.24);
+  backdrop-filter:blur(20px) saturate(145%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 28px rgba(0,0,0,.10);
+}
+.topbar{
+  height:74px;display:grid;grid-template-columns:50px 1fr 30px 224px;gap:18px;align-items:center;
+  padding:0 34px 0 28px;margin-bottom:18px;
+}
+.home{font-size:31px;line-height:1;text-shadow:0 3px 10px rgba(0,0,0,.35)}
+.logo{font-size:27px;line-height:1.12;font-weight:900;letter-spacing:2px;text-shadow:0 4px 10px rgba(0,0,0,.42)}
+.bell{font-size:24px;text-align:center}
+.profile{
+  height:72px;border-radius:22px;padding:8px 14px;display:grid;grid-template-columns:54px 1fr 16px;gap:12px;align-items:center;
+}
+.profile-avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:38px;background:rgba(255,255,255,.08)}
+.profile strong{display:block;font-size:15px}
+.profile small{display:block;margin-top:4px;font-size:12px;opacity:.82}
+.layout{display:grid;grid-template-columns:240px 1fr 199px;gap:16px;height:592px}
+.sidebar{border-radius:18px;padding:12px}
+.menu-item{
+  position:relative;height:48px;border-radius:13px;display:grid;grid-template-columns:34px 1fr;align-items:center;gap:10px;padding:0 10px;
+  font-size:15px;font-weight:800;text-shadow:0 2px 5px rgba(0,0,0,.35)
+}
+.menu-item + .menu-item{margin-top:2px}
+.menu-item.active{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15)}
+.menu-icon{font-size:24px;text-align:center}
+.badge{position:absolute;right:10px;top:10px;min-width:20px;height:20px;border-radius:999px;display:grid;place-items:center;background:#ff4d61;font-size:12px;font-weight:900;box-shadow:0 4px 10px rgba(255,76,97,.30)}
+.separator{height:1px;background:rgba(255,255,255,.22);margin:12px 8px}
+.center{display:grid;grid-template-rows:220px 1fr;gap:12px}
+.panel{border-radius:18px;padding:16px}
+.panel h2{font-size:18px;margin-bottom:14px;text-shadow:0 2px 6px rgba(0,0,0,.35)}
+.members{display:grid;grid-template-columns:repeat(4,1fr) 35px;gap:12px}
+.member-card{height:152px;border-radius:14px;padding:14px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22)}
+.member-avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:39px;margin-bottom:10px}
+.member-card strong{display:block;font-size:15px}
+.member-card small{display:block;margin-top:4px;font-size:12px;opacity:.82}
+.score{margin-top:10px;color:#ffd15a;font-size:13px;font-weight:900}
+.add-member{height:152px;border-radius:14px;border:1px dashed rgba(255,255,255,.30);display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.70);font-size:24px;line-height:1.1}
+.add-member span{font-size:10px}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.task{height:78px;border-radius:14px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);display:grid;grid-template-columns:54px 1fr 34px;gap:10px;align-items:center;padding:10px 12px}
+.task-icon{font-size:30px;text-align:center}
+.task strong{display:block;font-size:15px}
+.task small{display:block;margin-top:4px;font-size:12px;opacity:.82}
+.pill{display:inline-grid;place-items:center;min-width:23px;height:18px;padding:0 6px;border-radius:999px;margin-top:6px;margin-right:4px;background:linear-gradient(135deg,#7e66ff,#b85cff);font-size:12px;font-weight:900}
+.check{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.42);display:grid;place-items:center;font-size:15px}
+.done{border:0;background:#73c987;font-weight:900}
+.right{display:grid;grid-template-rows:272px 1fr;gap:12px}
+.calendar,.routines{border-radius:18px;padding:14px}
+.calendar h2,.routines h2{font-size:18px;margin-bottom:14px}
+.month{display:grid;grid-template-columns:28px 1fr 28px;align-items:center;margin-bottom:12px}
+.month strong{text-align:center;font-size:14px}
+.arrow-btn{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+.days,.dates{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+.days{font-size:12px;font-weight:800;opacity:.86;margin-bottom:10px}
+.dates{row-gap:8px;font-size:13px;font-weight:700}
+.dates div{height:20px;display:grid;place-items:center;border-radius:50%}
+.selected{background:#36aee9;box-shadow:0 0 16px rgba(53,174,233,.65)}
+.routine{height:57px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;grid-template-columns:38px 1fr 18px;gap:8px;align-items:center;padding:0 8px;border-bottom:1px solid rgba(255,255,255,.08)}
+.routine-icon{font-size:25px;text-align:center}
+.routine strong{display:block;font-size:13px}
+.routine small{display:block;margin-top:3px;font-size:12px;opacity:.8}
+.quote{height:58px;margin-top:16px;border-radius:14px;display:grid;place-items:center;font-size:16px;text-shadow:0 2px 6px rgba(0,0,0,.35)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="home">⌂</div>
+    <div class="logo">CSALÁDI<br>FELADATKEZELŐ</div>
+    <div class="bell">♧</div>
+    <div class="profile glass">
+      <div class="profile-avatar">👨‍💼</div>
+      <div><strong>Apamedve</strong><small>Szülő</small></div>
+      <div>⌄</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar glass">
+      <div class="menu-item active"><div class="menu-icon">📊</div><div>Napi Jelentés</div><div class="badge">2</div></div>
+      <div class="menu-item"><div class="menu-icon">➕</div><div>Új Feladat</div></div>
+      <div class="menu-item"><div class="menu-icon">📋</div><div>Napi Rutinok</div><div class="badge">10</div></div>
+      <div class="menu-item"><div class="menu-icon">🗓️</div><div>Naptár</div></div>
+      <div class="separator"></div>
+      <div class="menu-item"><div class="menu-icon">🏡</div><div>Családi Kezelő</div></div>
+      <div class="menu-item"><div class="menu-icon">💰</div><div>Költségek</div></div>
+      <div class="menu-item"><div class="menu-icon">💬</div><div>Chat</div></div>
+      <div class="menu-item"><div class="menu-icon">🎮</div><div>Játékok</div></div>
+      <div class="separator"></div>
+      <div class="menu-item"><div class="menu-icon">🪄</div><div>Kinézet</div></div>
+      <div class="menu-item"><div class="menu-icon">📓</div><div>Napló</div></div>
+      <div class="menu-item"><div class="menu-icon">⚙️</div><div>Beállítások</div></div>
+    </aside>
+
+    <section class="center">
+      <section class="panel glass">
+        <h2>Családtagok</h2>
+        <div class="members">
+          <div class="member-card"><div class="member-avatar">👨‍💼</div><strong>Apamedve</strong><small>Szülő</small><div class="score">🏆 1200</div></div>
+          <div class="member-card"><div class="member-avatar">🏆</div><strong>Aisika</strong><small>Tinédzser</small><div class="score">🏆 850</div></div>
+          <div class="member-card"><div class="member-avatar">👧🏽</div><strong>Mira</strong><small>Gyerek</small><div class="score">🏆 650</div></div>
+          <div class="member-card"><div class="member-avatar">👩🏼</div><strong>Anya</strong><small>Szülő</small><div class="score">🏆 950</div></div>
+          <div class="add-member">+<br><span>Tag<br>hozzá<br>adása</span></div>
+        </div>
+      </section>
+
+      <section class="panel glass">
+        <h2>Mai feladatok</h2>
+        <div class="tasks">
+          <div class="task"><div class="task-icon">🧹</div><div><strong>Szoba rendrakás</strong><small>Mira</small><span class="pill">✓</span><span class="pill">20</span></div><div class="check done">✓</div></div>
+          <div class="task"><div class="task-icon">📖</div><div><strong>Házi feladat</strong><small>Aisika</small><span class="pill">✓</span><span class="pill">25</span></div><div class="check"></div></div>
+          <div class="task"><div class="task-icon">🪥</div><div><strong>Fogmosás</strong><small>Mira</small><span class="pill">10</span><span class="pill">10</span></div><div class="check done">✓</div></div>
+          <div class="task"><div class="task-icon">🐕</div><div><strong>Kutya sétáltatás</strong><small>Apamedve</small><span class="pill">30</span><span class="pill">30</span></div><div class="check"></div></div>
+          <div class="task"><div class="task-icon">🗑️</div><div><strong>Lomtalanítás</strong><small>Anya</small><span class="pill">◎</span><span class="pill">15</span></div><div class="check"></div></div>
+          <div class="task"><div class="task-icon">🏋️</div><div><strong>Edzés</strong><small>Apamedve</small><span class="pill">25</span><span class="pill">25</span></div><div class="check"></div></div>
+        </div>
+      </section>
+    </section>
+
+    <aside class="right">
+      <section class="calendar glass">
+        <h2>Naptár</h2>
+        <div class="month"><div class="arrow-btn">‹</div><strong>Május 2026</strong><div class="arrow-btn">›</div></div>
+        <div class="days"><div>H</div><div>K</div><div>Sze</div><div>Cs</div><div>P</div><div>Szo</div><div>V</div></div>
+        <div class="dates">
+          <div></div><div></div><div></div><div></div><div>1</div><div>2</div><div>3</div>
+          <div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
+          <div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div class="selected">17</div>
+          <div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div>
+          <div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div></div>
+        </div>
+      </section>
+      <section class="routines glass">
+        <h2>Mai rutinok</h2>
+        <div class="routine"><div class="routine-icon">☀️</div><div><strong>Reggeli rutin</strong><small>07:00</small></div><div>›</div></div>
+        <div class="routine"><div class="routine-icon">💼</div><div><strong>Iskola / Munka</strong><small>08:00</small></div><div>›</div></div>
+        <div class="routine"><div class="routine-icon">📖</div><div><strong>Délutáni rutin</strong><small>16:00</small></div><div>›</div></div>
+        <div class="routine"><div class="routine-icon">🌙</div><div><strong>Esti rutin</strong><small>20:00</small></div><div>›</div></div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="quote glass">🏆 „A kis lépések nagy változásokhoz vezetnek.”</footer>
+</div>
+</body>
+</html>
