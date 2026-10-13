@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
+<script>
+(function(){
+  function report(message){
+    var old=document.getElementById("startup-diagnostic"); if(old)return;
+    var box=document.createElement("pre"); box.id="startup-diagnostic";
+    box.style="position:fixed;z-index:2147483647;inset:12px;padding:16px;background:#fff;color:#900;border:3px solid #900;white-space:pre-wrap;overflow:auto;font:14px monospace";
+    box.textContent="INDÍTÁSI HIBA
+"+String(message); document.body.appendChild(box);
+  }
+  window.addEventListener("error",function(e){report((e.message||"Script betöltési hiba")+"
+"+(e.filename||e.target&&e.target.src||"")+":"+(e.lineno||""))},true);
+  window.addEventListener("unhandledrejection",function(e){report("Promise hiba: "+(e.reason&&e.reason.stack||e.reason))});
+  setTimeout(function(){var r=document.getElementById("root");if(r&&!r.children.length)report("A React nem rajzolt semmit 8 másodperc alatt. Ellenőrizd a Babel/React script betöltését.")},8000);
+})();
+</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <meta name="format-detection" content="telephone=no">
